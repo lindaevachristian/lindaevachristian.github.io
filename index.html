@@ -1,30 +1,252 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Saya</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Portofolio Saya</title>
+    <!-- Font elegan dari Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet"/>
     <style>
-        /* Mengatur warna latar belakang kuning pasir */
+        /* RESET & GLOBAL */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: #F5DEB3; /* Warna kuning pasir */
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #fdf6e3 0%, #f5e6ca 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Full viewport height */
-            margin: 0;
+            padding: 20px;
         }
 
-        /* Gaya untuk tulisan */
+        /* KARTU UTAMA – elegan dengan efek kaca */
+        .card {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 248, 235, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25),
+                        inset 0 1px 2px rgba(255,255,240,0.6);
+            border: 1px solid rgba(255, 245, 215, 0.5);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .card:hover { transform: scale(1.01); }
+
+        /* AVATAR / FOTO PROFIL */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d4a373, #b6896b);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #fff;
+            box-shadow: 0 12px 28px rgba(180, 130, 90, 0.3);
+            border: 3px solid rgba(255, 245, 215, 0.6);
+            user-select: none;
+        }
+
+        /* TULISAN */
         h1 {
-            font-size: 3em;
-            color: #5D4037; /* Warna coklat gelap agar kontras */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: #3d2c1b;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: #7f6b58;
+            font-weight: 400;
+            margin-bottom: 28px;
+            border-bottom: 2px dashed #dcc7b0;
+            padding-bottom: 18px;
+        }
+
+        /* TOMBOL INTERAKTIF */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 60px;
+            background: #dcc7b0;
+            color: #3d2c1b;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(160, 120, 80, 0.15);
+            flex: 0 1 auto;
+        }
+        .btn-primary {
+            background: #b6896b;
+            color: #fef8ed;
+            box-shadow: 0 8px 20px rgba(182, 137, 107, 0.35);
+        }
+        .btn-primary:hover {
+            background: #a07458;
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(160, 120, 80, 0.25);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #b6896b;
+            color: #5d4230;
+        }
+        .btn-outline:hover {
+            background: #b6896b;
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* AREA RESPONS JAVASCRIPT */
+        .response-box {
+            margin-top: 32px;
+            padding: 18px 24px;
+            background: rgba(255, 242, 225, 0.6);
+            border-radius: 30px;
+            border: 1px solid #e9d6c0;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            color: #3d2c1b;
+            transition: all 0.3s ease;
+        }
+        .response-box.highlight {
+            background: #ebd5bc;
+            border-color: #b6896b;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #a58d78;
+            letter-spacing: 0.3px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .card { padding: 32px 20px; }
+            h1 { font-size: 1.8rem; }
+            .btn { width: 100%; }
         }
     </style>
 </head>
 <body>
-    <h1>Hai saya pemula</h1>
+
+<div class="card">
+    <!-- Avatar dengan inisial -->
+    <div class="avatar" id="avatar">👤</div>
+
+    <h1>Hai, saya pemula ✨</h1>
+    <div class="subtitle">Sedang belajar membuat web elegan</div>
+
+    <!-- Tombol – aksi JavaScript -->
+    <div class="btn-group">
+        <button class="btn btn-primary" id="sapaBtn">👋 Sapa Saya</button>
+        <button class="btn btn-outline" id="ubahAvatarBtn">🎭 Ganti Avatar</button>
+        <button class="btn btn-outline" id="resetBtn">↻ Reset</button>
+    </div>
+
+    <!-- Kotak respons dari JavaScript -->
+    <div class="response-box" id="responseBox">
+        Klik tombol di atas untuk interaksi
+    </div>
+
+    <div class="footer">
+        ✦ dibuat dengan <span style="color:#b6896b;">❤</span> dan JavaScript ✦
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    //  JAVASCRIPT ELEGAN – semua interaksi di sini
+    // ============================================================
+
+    // Ambil elemen DOM
+    const avatar = document.getElementById('avatar');
+    const responseBox = document.getElementById('responseBox');
+    const sapaBtn = document.getElementById('sapaBtn');
+    const ubahAvatarBtn = document.getElementById('ubahAvatarBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Data avatar (emoji)
+    const avatarList = ['👤', '😊', '🚀', '🌟', '🎨', '🧑‍💻', '🌈', '🦄'];
+    let avatarIndex = 0;
+
+    // Fungsi untuk menulis respons dengan efek elegan
+    function setResponse(text, isHighlight = true) {
+        responseBox.textContent = text;
+        if (isHighlight) {
+            responseBox.classList.add('highlight');
+        } else {
+            responseBox.classList.remove('highlight');
+        }
+    }
+
+    // ---- 1. Tombol Sapa ----
+    sapaBtn.addEventListener('click', function() {
+        const jam = new Date().getHours();
+        let sapaan = 'Halo!';
+        if (jam < 10) sapaan = 'Selamat pagi ☀️';
+        else if (jam < 15) sapaan = 'Selamat siang 🌤️';
+        else if (jam < 19) sapaan = 'Selamat sore 🌅';
+        else sapaan = 'Selamat malam 🌙';
+
+        setResponse(`${sapaan}! Senang berkenalan denganmu. Terus belajar ya! 💪`);
+    });
+
+    // ---- 2. Ganti Avatar ----
+    ubahAvatarBtn.addEventListener('click', function() {
+        avatarIndex = (avatarIndex + 1) % avatarList.length;
+        avatar.textContent = avatarList[avatarIndex];
+        setResponse(`Avatar berubah menjadi ${avatarList[avatarIndex]} ✨`, true);
+    });
+
+    // ---- 3. Reset ----
+    resetBtn.addEventListener('click', function() {
+        avatar.textContent = '👤';
+        avatarIndex = 0;
+        setResponse('Kembali ke awal. Klik tombol lain untuk interaksi.', false);
+        // Hilangkan highlight setelah 2 detik
+        setTimeout(() => {
+            responseBox.classList.remove('highlight');
+        }, 2000);
+    });
+
+    // Efek tambahan: saat hover tombol, responseBox kasih feedback halus
+    // (opsional) – biar makin elegan
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            this.style.transition = 'all 0.2s';
+        });
+    });
+
+    // Tampilkan pesan selamat datang saat halaman dimuat
+    window.addEventListener('load', function() {
+        setResponse('✨ Selamat datang! Coba klik tombol di atas.', false);
+        setTimeout(() => {
+            responseBox.classList.remove('highlight');
+        }, 1500);
+    });
+</script>
+
 </body>
 </html>
