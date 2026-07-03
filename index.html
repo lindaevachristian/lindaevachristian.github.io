@@ -3,200 +3,167 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Harga Emas & Kurs Dolar</title>
+    <title>File Manager - GitHub</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
     <style>
-        /* ===== RESET & GLOBAL ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* ===== RESET ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
+            background: #f0ece6;
             min-height: 100vh;
-            background: linear-gradient(145deg, #f7f0e6 0%, #e8dccc 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 24px;
+            padding: 20px;
         }
-
-        /* ===== KARTU UTAMA ===== */
-        .card {
-            max-width: 800px;
+        .container {
+            max-width: 1000px;
             width: 100%;
-            background: rgba(255, 248, 240, 0.78);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-radius: 56px;
-            padding: 48px 44px;
-            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.3),
-                        inset 0 1px 2px rgba(255, 245, 225, 0.7);
-            border: 1px solid rgba(255, 240, 215, 0.5);
-            transition: transform 0.35s ease;
-        }
-
-        .card:hover {
-            transform: scale(1.005);
-        }
-
-        /* ===== HEADER ===== */
-        .header {
-            text-align: center;
-            margin-bottom: 36px;
-            border-bottom: 2px dashed #dccfc0;
-            padding-bottom: 24px;
-        }
-
-        .header h1 {
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: #2d2419;
-            letter-spacing: -0.5px;
-        }
-
-        .header p {
-            color: #8a7a68;
-            font-size: 0.95rem;
-            margin-top: 6px;
-        }
-
-        .badge-update {
-            display: inline-block;
-            margin-top: 10px;
-            background: #dccfc0;
-            padding: 4px 18px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            color: #3d3228;
-            letter-spacing: 0.3px;
-        }
-
-        /* ===== GRID DATA ===== */
-        .grid-data {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 28px;
-        }
-
-        .data-box {
-            background: rgba(255, 242, 230, 0.5);
+            background: #fffcf8;
             border-radius: 32px;
-            padding: 28px 22px;
-            border: 1px solid #e6d8c8;
-            text-align: center;
-            transition: all 0.3s ease;
-            min-height: 140px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 36px 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            border: 1px solid #e8e0d8;
         }
-
-        .data-box:hover {
-            background: rgba(255, 242, 230, 0.8);
-            border-color: #c4b09c;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(160, 130, 100, 0.12);
-        }
-
-        .data-label {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #8a7a68;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .data-value {
-            font-size: 2.1rem;
-            font-weight: 700;
+        h1 {
+            font-size: 1.8rem;
             color: #2d2419;
-            transition: all 0.3s;
+            margin-bottom: 8px;
         }
-
-        .data-value.loading {
-            opacity: 0.4;
-            animation: pulse 1.2s infinite;
+        .subtitle {
+            color: #8a7a68;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
         }
-
-        .data-value.error {
-            color: #b35a4a;
-            font-size: 1rem;
-            font-weight: 400;
-        }
-
-        .data-sub {
-            font-size: 0.8rem;
-            color: #9a8a78;
-            margin-top: 6px;
-        }
-
-        /* ===== TOMBOL ===== */
-        .btn-group {
+        .form-row {
             display: flex;
-            gap: 14px;
             flex-wrap: wrap;
-            justify-content: center;
-            margin: 6px 0 18px;
+            gap: 12px;
+            margin-bottom: 20px;
+            background: #f6f2ec;
+            padding: 18px 20px;
+            border-radius: 20px;
         }
-
+        .form-row input, .form-row select {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 16px;
+            border: 1px solid #ddd6ce;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            background: #fff;
+            outline: none;
+            transition: 0.2s;
+        }
+        .form-row input:focus, .form-row select:focus {
+            border-color: #b8957a;
+            box-shadow: 0 0 0 3px rgba(184,149,122,0.15);
+        }
         .btn {
-            padding: 14px 34px;
+            padding: 12px 28px;
             border: none;
-            border-radius: 60px;
+            border-radius: 40px;
             font-weight: 500;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: 0.25s;
             background: #dccfc0;
             color: #2d2419;
-            box-shadow: 0 4px 12px rgba(140, 110, 80, 0.1);
-            flex: 0 1 auto;
         }
-
         .btn-primary {
             background: #b8957a;
-            color: #fff6ec;
-            box-shadow: 0 8px 24px rgba(184, 149, 122, 0.35);
+            color: #fff;
         }
-
         .btn-primary:hover {
             background: #a07f67;
-            transform: translateY(-3px);
-            box-shadow: 0 14px 32px rgba(160, 120, 90, 0.25);
+            transform: translateY(-2px);
         }
-
+        .btn-danger {
+            background: #d47a7a;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #b86161;
+            transform: translateY(-2px);
+        }
         .btn-outline {
             background: transparent;
             border: 1.5px solid #b8957a;
             color: #4d3c2e;
         }
-
         .btn-outline:hover {
             background: #b8957a;
-            color: #fff6ec;
-            transform: translateY(-3px);
+            color: #fff;
         }
-
-        /* ===== STATUS BAR ===== */
-        .status-bar {
+        .btn-success {
+            background: #6f9e7b;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #5a8465;
+            transform: translateY(-2px);
+        }
+        .file-list {
+            margin-top: 16px;
+            border: 1px solid #e8e0d8;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .file-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.75rem;
-            color: #a28e7a;
-            border-top: 1px solid #e6d8c8;
-            padding-top: 18px;
-            margin-top: 4px;
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0ece6;
+            background: #fff;
+            transition: 0.15s;
             flex-wrap: wrap;
             gap: 8px;
         }
-
-        .status-dot {
+        .file-item:last-child { border-bottom: none; }
+        .file-item:hover { background: #faf7f2; }
+        .file-icon { font-size: 1.3rem; margin-right: 12px; }
+        .file-name {
+            font-weight: 500;
+            color: #2d2419;
+            word-break: break-all;
+            flex: 1;
+            min-width: 120px;
+        }
+        .file-size {
+            color: #8a7a68;
+            font-size: 0.8rem;
+            margin: 0 12px;
+        }
+        .file-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .file-actions .btn {
+            padding: 6px 14px;
+            font-size: 0.75rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #a28e7a;
+            font-size: 0.95rem;
+        }
+        .status-bar {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: #f6f2ec;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            color: #4d3c2e;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .status-bar .dot {
             display: inline-block;
             width: 8px;
             height: 8px;
@@ -205,275 +172,528 @@
             margin-right: 6px;
             animation: blink 1.6s infinite;
         }
-
-        /* ===== ANIMASI ===== */
-        @keyframes pulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 0.8; }
-        }
-
         @keyframes blink {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.25; }
+            50% { opacity: 0.2; }
         }
-
-        /* ===== RESPONSIVE ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: #fffcf8;
+            border-radius: 32px;
+            padding: 32px 36px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+        .modal-box h3 { margin-bottom: 16px; color: #2d2419; }
+        .modal-box input { width: 100%; padding: 12px 16px; border: 1px solid #ddd6ce; border-radius: 40px; margin-bottom: 16px; }
+        .modal-box .btn-group { display: flex; gap: 10px; justify-content: flex-end; }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ddd6ce;
+            border-top-color: #b8957a;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .token-hint {
+            font-size: 0.75rem;
+            color: #a28e7a;
+            margin-top: 4px;
+        }
+        .token-hint a { color: #b8957a; }
         @media (max-width: 600px) {
-            .card {
-                padding: 32px 20px;
-                border-radius: 36px;
-            }
-            .header h1 {
-                font-size: 1.6rem;
-            }
-            .grid-data {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .data-value {
-                font-size: 1.7rem;
-            }
-            .btn {
-                width: 100%;
-                padding: 14px 20px;
-            }
-            .status-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .card {
-                padding: 24px 16px;
-            }
-            .data-box {
-                padding: 20px 16px;
-                min-height: 110px;
-            }
-            .data-value {
-                font-size: 1.4rem;
-            }
+            .container { padding: 20px 16px; }
+            .form-row { flex-direction: column; }
+            .file-item { flex-direction: column; align-items: stretch; }
+            .file-actions { justify-content: flex-start; }
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
+<div class="container" id="app">
 
-        <!-- ===== HEADER ===== -->
-        <div class="header">
-            <h1>📊 Harga Emas & Kurs Dolar</h1>
-            <p>Data real-time dari berbagai sumber</p>
-            <span class="badge-update" id="lastUpdate">⏳ Memuat data...</span>
-        </div>
+    <h1>📁 File Manager</h1>
+    <div class="subtitle">Kelola file di repository GitHub kamu</div>
 
-        <!-- ===== GRID DATA ===== -->
-        <div class="grid-data">
-            <!-- Emas -->
-            <div class="data-box">
-                <div class="data-label">💰 Harga Emas</div>
-                <div class="data-value loading" id="emasValue">Memuat...</div>
-                <div class="data-sub" id="emasSub">per gram (IDR)</div>
-            </div>
-
-            <!-- Dolar -->
-            <div class="data-box">
-                <div class="data-label">💵 Kurs Dolar</div>
-                <div class="data-value loading" id="dolarValue">Memuat...</div>
-                <div class="data-sub" id="dolarSub">USD / IDR</div>
-            </div>
-        </div>
-
-        <!-- ===== TOMBOL ===== -->
-        <div class="btn-group">
-            <button class="btn btn-primary" id="refreshBtn">🔄 Refresh Data</button>
-            <button class="btn btn-outline" id="toggleAutoBtn">⏸️ Matikan Auto-Update</button>
-        </div>
-
-        <!-- ===== STATUS BAR ===== -->
-        <div class="status-bar">
-            <span>
-                <span class="status-dot"></span>
-                <span id="statusText">Siap mengambil data...</span>
-            </span>
-            <span id="timestampDisplay">⏱️ Terakhir: --:--:--</span>
-        </div>
-
+    <!-- ===== SETUP TOKEN & REPO ===== -->
+    <div class="form-row" id="setupRow">
+        <input type="text" id="tokenInput" placeholder="Personal Access Token (classic)" />
+        <input type="text" id="repoInput" placeholder="username/repo" value="username/repo" />
+        <button class="btn btn-primary" id="connectBtn">🔗 Hubungkan</button>
+    </div>
+    <div class="token-hint">
+        💡 Buat token di <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings → Tokens</a> (centang repo)
     </div>
 
-    <script>
-        // ================================================================
-        //  JAVASCRIPT LENGKAP – FETCH DATA + AUTO UPDATE + UI ELEGAN
-        // ================================================================
+    <!-- ===== TOMBOL AKSI ===== -->
+    <div class="form-row" id="actionRow" style="display:none;">
+        <input type="file" id="fileUpload" style="flex:1; padding: 8px; border: none;" />
+        <button class="btn btn-success" id="uploadBtn">⬆ Upload</button>
+        <button class="btn btn-outline" id="refreshBtn">🔄 Refresh</button>
+        <button class="btn btn-danger" id="disconnectBtn">✕ Putus</button>
+    </div>
 
-        // ---- DOM ELEMEN ----
-        const emasValue = document.getElementById('emasValue');
-        const emasSub = document.getElementById('emasSub');
-        const dolarValue = document.getElementById('dolarValue');
-        const dolarSub = document.getElementById('dolarSub');
-        const lastUpdate = document.getElementById('lastUpdate');
-        const statusText = document.getElementById('statusText');
-        const timestampDisplay = document.getElementById('timestampDisplay');
-        const refreshBtn = document.getElementById('refreshBtn');
-        const toggleAutoBtn = document.getElementById('toggleAutoBtn');
+    <!-- ===== DAFTAR FILE ===== -->
+    <div id="fileListContainer" style="display:none;">
+        <div class="file-list" id="fileList">
+            <div class="empty-state">📭 Belum ada file. Upload file atau refresh.</div>
+        </div>
+    </div>
 
-        // ---- STATE ----
-        let autoUpdate = true;
-        let autoInterval = null;
-        let isFetching = false;
+    <!-- ===== STATUS ===== -->
+    <div class="status-bar" id="statusBar">
+        <span><span class="dot"></span> <span id="statusText">Belum terhubung</span></span>
+        <span id="pathDisplay">📂 root</span>
+    </div>
 
-        // ---- FORMAT ANGKA ----
-        function formatRupiah(angka) {
-            if (angka === null || angka === undefined || isNaN(angka)) return 'Tidak tersedia';
-            return 'Rp ' + Math.round(angka).toLocaleString('id-ID');
+    <!-- ===== MODAL RENAME ===== -->
+    <div class="modal-overlay" id="renameModal">
+        <div class="modal-box">
+            <h3>✏️ Ubah Nama File</h3>
+            <input type="text" id="renameInput" placeholder="Nama baru" />
+            <div class="btn-group">
+                <button class="btn btn-outline" id="renameCancel">Batal</button>
+                <button class="btn btn-primary" id="renameConfirm">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DELETE KONFIRMASI ===== -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <h3>⚠️ Hapus File?</h3>
+            <p style="color:#5d4a3a; margin-bottom: 16px;" id="deleteFileName"></p>
+            <div class="btn-group">
+                <button class="btn btn-outline" id="deleteCancel">Batal</button>
+                <button class="btn btn-danger" id="deleteConfirm">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ================================================================
+    //  FILE MANAGER – GitHub API
+    // ================================================================
+
+    // ---- DOM ELEMEN ----
+    const tokenInput = document.getElementById('tokenInput');
+    const repoInput = document.getElementById('repoInput');
+    const connectBtn = document.getElementById('connectBtn');
+    const disconnectBtn = document.getElementById('disconnectBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileUpload = document.getElementById('fileUpload');
+    const fileList = document.getElementById('fileList');
+    const fileListContainer = document.getElementById('fileListContainer');
+    const statusText = document.getElementById('statusText');
+    const pathDisplay = document.getElementById('pathDisplay');
+    const actionRow = document.getElementById('actionRow');
+    const setupRow = document.getElementById('setupRow');
+
+    // Modal
+    const renameModal = document.getElementById('renameModal');
+    const renameInput = document.getElementById('renameInput');
+    const renameCancel = document.getElementById('renameCancel');
+    const renameConfirm = document.getElementById('renameConfirm');
+    const deleteModal = document.getElementById('deleteModal');
+    const deleteFileName = document.getElementById('deleteFileName');
+    const deleteCancel = document.getElementById('deleteCancel');
+    const deleteConfirm = document.getElementById('deleteConfirm');
+
+    // ---- STATE ----
+    let token = '';
+    let repo = '';
+    let currentPath = '';
+    let renameTarget = null;
+    let deleteTarget = null;
+
+    // ---- SIMPAN TOKEN DI LOCALSTORAGE ----
+    function loadSettings() {
+        token = localStorage.getItem('gh_token') || '';
+        repo = localStorage.getItem('gh_repo') || 'username/repo';
+        tokenInput.value = token;
+        repoInput.value = repo;
+        if (token && repo) {
+            connectRepo();
+        }
+    }
+
+    function saveSettings(t, r) {
+        localStorage.setItem('gh_token', t);
+        localStorage.setItem('gh_repo', r);
+    }
+
+    // ---- KONEKSI ----
+    function connectRepo() {
+        token = tokenInput.value.trim();
+        repo = repoInput.value.trim();
+        if (!token || !repo) {
+            setStatus('❌ Token dan repo wajib diisi', '#d47a7a');
+            return;
+        }
+        saveSettings(token, repo);
+        actionRow.style.display = 'flex';
+        setupRow.style.display = 'none';
+        fileListContainer.style.display = 'block';
+        setStatus('🔗 Terhubung ke ' + repo, '#6f9e7b');
+        fetchFiles();
+    }
+
+    function disconnectRepo() {
+        token = '';
+        repo = '';
+        localStorage.removeItem('gh_token');
+        localStorage.removeItem('gh_repo');
+        actionRow.style.display = 'none';
+        setupRow.style.display = 'flex';
+        fileListContainer.style.display = 'none';
+        setStatus('🔌 Terputus', '#8a7a68');
+        fileList.innerHTML = '<div class="empty-state">📭 Belum terhubung</div>';
+    }
+
+    // ---- STATUS ----
+    function setStatus(msg, color = '#4d3c2e') {
+        statusText.textContent = msg;
+        document.querySelector('.status-bar').style.borderLeft = `4px solid ${color}`;
+    }
+
+    function setLoading(loading) {
+        if (loading) {
+            statusText.innerHTML = '<span class="loading-spinner"></span> Memuat...';
+        }
+    }
+
+    // ---- AMBIL DAFTAR FILE ----
+    async function fetchFiles() {
+        if (!token || !repo) return;
+        setLoading(true);
+        try {
+            const url = `https://api.github.com/repos/${repo}/contents/${currentPath}`;
+            const res = await fetch(url, {
+                headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+            });
+
+            if (!res.ok) {
+                if (res.status === 404) {
+                    fileList.innerHTML = '<div class="empty-state">📂 Folder kosong</div>';
+                    setStatus('📂 Folder kosong', '#8a7a68');
+                } else if (res.status === 401) {
+                    setStatus('❌ Token tidak valid atau expired', '#d47a7a');
+                    fileList.innerHTML = '<div class="empty-state">🔑 Token tidak valid</div>';
+                } else {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+                return;
+            }
+
+            const data = await res.json();
+            renderFiles(data);
+            setStatus(`✅ ${data.length} item ditemukan`, '#6f9e7b');
+            pathDisplay.textContent = '📂 ' + (currentPath || 'root');
+
+        } catch (err) {
+            console.error(err);
+            setStatus('❌ Gagal memuat: ' + err.message, '#d47a7a');
+            fileList.innerHTML = `<div class="empty-state">❌ Error: ${err.message}</div>`;
+        }
+    }
+
+    // ---- RENDER FILE ----
+    function renderFiles(files) {
+        if (!files || files.length === 0) {
+            fileList.innerHTML = '<div class="empty-state">📭 Tidak ada file</div>';
+            return;
         }
 
-        function formatDolar(angka) {
-            if (angka === null || angka === undefined || isNaN(angka)) return 'Tidak tersedia';
-            return 'Rp ' + angka.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        let html = '';
+        // Urutkan: folder dulu, lalu file
+        const sorted = files.sort((a, b) => {
+            if (a.type === 'dir' && b.type !== 'dir') return -1;
+            if (a.type !== 'dir' && b.type === 'dir') return 1;
+            return a.name.localeCompare(b.name);
+        });
+
+        for (const item of sorted) {
+            const icon = item.type === 'dir' ? '📁' : getFileIcon(item.name);
+            const size = item.size ? `(${(item.size / 1024).toFixed(1)} KB)` : '';
+            const isDir = item.type === 'dir';
+
+            html += `
+                <div class="file-item">
+                    <span style="display:flex; align-items:center; flex:1; min-width:150px;">
+                        <span class="file-icon">${icon}</span>
+                        <span class="file-name" ${isDir ? 'style="cursor:pointer; color:#b8957a;"' : ''} 
+                              onclick="${isDir ? `openFolder('${item.path}')` : `viewFile('${item.path}')`}">
+                            ${item.name}
+                        </span>
+                        <span class="file-size">${size}</span>
+                    </span>
+                    <span class="file-actions">
+                        ${!isDir ? `
+                            <button class="btn btn-outline" onclick="renameFile('${item.path}')">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDelete('${item.path}')">🗑️</button>
+                            <button class="btn btn-primary" onclick="downloadFile('${item.download_url}')">⬇️</button>
+                        ` : `
+                            <button class="btn btn-outline" onclick="openFolder('${item.path}')">📂 Buka</button>
+                        `}
+                    </span>
+                </div>
+            `;
         }
+        fileList.innerHTML = html;
+    }
 
-        // ---- AMBIL DATA DARI API ----
-        async function fetchData() {
-            if (isFetching) return;
-            isFetching = true;
+    // ---- ICON FILE ----
+    function getFileIcon(name) {
+        const ext = name.split('.').pop().toLowerCase();
+        const icons = {
+            'html': '🌐', 'css': '🎨', 'js': '⚡', 'json': '📋',
+            'png': '🖼️', 'jpg': '🖼️', 'jpeg': '🖼️', 'gif': '🖼️', 'svg': '🖼️',
+            'pdf': '📄', 'doc': '📝', 'docx': '📝', 'txt': '📃',
+            'zip': '📦', 'rar': '📦', 'gz': '📦',
+            'mp4': '🎬', 'mp3': '🎵', 'wav': '🎵',
+            'exe': '⚙️', 'dmg': '💿',
+            'md': '📝', 'yml': '⚙️', 'yaml': '⚙️', 'toml': '⚙️'
+        };
+        return icons[ext] || '📄';
+    }
 
-            // Tampilkan loading
-            emasValue.className = 'data-value loading';
-            dolarValue.className = 'data-value loading';
-            emasValue.textContent = '⏳ Memuat...';
-            dolarValue.textContent = '⏳ Memuat...';
-            statusText.textContent = '🔄 Mengambil data...';
+    // ---- NAVIGASI FOLDER ----
+    window.openFolder = function(path) {
+        currentPath = path;
+        fetchFiles();
+    };
+
+    // ---- LIHAT FILE (preview) ----
+    window.viewFile = function(path) {
+        const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+        fetch(url, {
+            headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.content) {
+                const content = atob(data.content);
+                if (content.length > 1000) {
+                    alert('📄 Preview (potongan):\n\n' + content.substring(0, 1000) + '\n\n... (file terlalu besar)');
+                } else {
+                    alert('📄 Konten file:\n\n' + content);
+                }
+            }
+        })
+        .catch(err => alert('❌ Gagal membaca file'));
+    };
+
+    // ---- DOWNLOAD ----
+    window.downloadFile = function(url) {
+        if (url) window.open(url, '_blank');
+    };
+
+    // ---- UPLOAD FILE ----
+    async function uploadFile() {
+        const file = fileUpload.files[0];
+        if (!file) { setStatus('⚠️ Pilih file dulu', '#d47a7a'); return; }
+        if (!token || !repo) { setStatus('❌ Belum terhubung', '#d47a7a'); return; }
+
+        const path = currentPath ? `${currentPath}/${file.name}` : file.name;
+        const reader = new FileReader();
+
+        reader.onload = async function(e) {
+            const content = btoa(e.target.result);
+            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
 
             try {
-                // 🔥 Jalankan kedua API secara paralel
-                const [emasResponse, dolarResponse] = await Promise.all([
-                    fetch('https://GoldPrice.Today/api.php?data=live'),
-                    fetch('https://api.exchangerate.fun/latest?base=USD')
-                ]);
+                setLoading(true);
+                const res = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Upload ${file.name}`,
+                        content: content
+                    })
+                });
 
-                if (!emasResponse.ok || !dolarResponse.ok) {
-                    throw new Error('Gagal mengambil data dari server');
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.message || 'Upload gagal');
                 }
 
-                const emasData = await emasResponse.json();
-                const dolarData = await dolarResponse.json();
+                setStatus(`✅ ${file.name} berhasil diupload`, '#6f9e7b');
+                fileUpload.value = '';
+                fetchFiles();
 
-                // ---- Proses Harga Emas ----
-                let hargaEmas = null;
-                let hargaEmasInIDR = null;
-
-                // Coba ambil dari field IDR atau USD lalu konversi ke IDR
-                if (emasData.IDR && emasData.IDR.gold_price) {
-                    hargaEmasInIDR = emasData.IDR.gold_price;
-                } else if (emasData.USD && emasData.USD.gold_price) {
-                    // Kalau cuma USD, konversi pakai kurs yang kita punya
-                    const kursIDR = dolarData.rates?.IDR || 15000; // fallback
-                    hargaEmasInIDR = emasData.USD.gold_price * kursIDR;
-                } else {
-                    // Coba cari field gold_price di mana saja
-                    for (const key in emasData) {
-                        if (emasData[key]?.gold_price) {
-                            hargaEmasInIDR = emasData[key].gold_price;
-                            break;
-                        }
-                    }
-                }
-
-                if (hargaEmasInIDR) {
-                    emasValue.className = 'data-value';
-                    emasValue.textContent = formatRupiah(hargaEmasInIDR);
-                    emasSub.textContent = 'per gram (IDR)';
-                } else {
-                    throw new Error('Format data emas tidak dikenali');
-                }
-
-                // ---- Proses Kurs Dolar ----
-                const kursIDR = dolarData.rates?.IDR;
-                if (kursIDR) {
-                    dolarValue.className = 'data-value';
-                    dolarValue.textContent = formatDolar(kursIDR);
-                    dolarSub.textContent = '1 USD = ' + formatRupiah(kursIDR);
-                } else {
-                    throw new Error('Kurs dolar tidak tersedia');
-                }
-
-                // ---- Update status ----
-                const now = new Date();
-                const waktu = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                timestampDisplay.textContent = '⏱️ Terakhir: ' + waktu;
-                lastUpdate.textContent = '✅ Update: ' + waktu;
-                statusText.textContent = '✅ Data berhasil dimuat';
-
-            } catch (error) {
-                console.error('Error:', error);
-                emasValue.className = 'data-value error';
-                dolarValue.className = 'data-value error';
-                emasValue.textContent = '⚠️ Gagal memuat';
-                dolarValue.textContent = '⚠️ Gagal memuat';
-                statusText.textContent = '❌ ' + error.message;
-                lastUpdate.textContent = '⏳ Gagal update';
-            } finally {
-                isFetching = false;
+            } catch (err) {
+                setStatus('❌ ' + err.message, '#d47a7a');
             }
-        }
+        };
+        reader.readAsBinaryString(file);
+    }
 
-        // ---- AUTO UPDATE ----
-        function startAutoUpdate() {
-            if (autoInterval) clearInterval(autoInterval);
-            autoInterval = setInterval(() => {
-                if (autoUpdate) {
-                    fetchData();
-                }
-            }, 60000); // Update tiap 60 detik
-        }
+    // ---- RENAME ----
+    window.renameFile = function(path) {
+        renameTarget = path;
+        const name = path.split('/').pop();
+        renameInput.value = name;
+        renameModal.classList.add('active');
+    };
 
-        function toggleAutoUpdate() {
-            autoUpdate = !autoUpdate;
-            if (autoUpdate) {
-                toggleAutoBtn.textContent = '⏸️ Matikan Auto-Update';
-                toggleAutoBtn.classList.remove('btn-primary');
-                toggleAutoBtn.classList.add('btn-outline');
-                statusText.textContent = '🔄 Auto-update aktif (60 detik)';
-                startAutoUpdate();
-            } else {
-                toggleAutoBtn.textContent = '▶️ Aktifkan Auto-Update';
-                toggleAutoBtn.classList.remove('btn-outline');
-                toggleAutoBtn.classList.add('btn-primary');
-                statusText.textContent = '⏸️ Auto-update dimatikan';
-                if (autoInterval) {
-                    clearInterval(autoInterval);
-                    autoInterval = null;
-                }
+    renameCancel.addEventListener('click', () => {
+        renameModal.classList.remove('active');
+        renameTarget = null;
+    });
+
+    renameConfirm.addEventListener('click', async () => {
+        if (!renameTarget || !renameInput.value.trim()) return;
+        const newName = renameInput.value.trim();
+        const oldPath = renameTarget;
+        const dir = oldPath.substring(0, oldPath.lastIndexOf('/') + 1);
+        const newPath = dir + newName;
+
+        try {
+            setLoading(true);
+            // 1. Get file SHA
+            const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${oldPath}`, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            const data = await getRes.json();
+            const sha = data.sha;
+
+            // 2. Create new file
+            const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${newPath}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: `Rename ${oldPath} → ${newPath}`,
+                    content: data.content,
+                    sha: sha
+                })
+            });
+
+            if (!putRes.ok) throw new Error('Gagal rename');
+
+            // 3. Delete old file
+            await fetch(`https://api.github.com/repos/${repo}/contents/${oldPath}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: `Delete ${oldPath}`,
+                    sha: sha
+                })
+            });
+
+            setStatus(`✅ Berhasil rename ke ${newName}`, '#6f9e7b');
+            renameModal.classList.remove('active');
+            renameTarget = null;
+            fetchFiles();
+
+        } catch (err) {
+            setStatus('❌ ' + err.message, '#d47a7a');
+        }
+    });
+
+    // ---- DELETE ----
+    window.confirmDelete = function(path) {
+        deleteTarget = path;
+        deleteFileName.textContent = `Yakin hapus "${path}"?`;
+        deleteModal.classList.add('active');
+    };
+
+    deleteCancel.addEventListener('click', () => {
+        deleteModal.classList.remove('active');
+        deleteTarget = null;
+    });
+
+    deleteConfirm.addEventListener('click', async () => {
+        if (!deleteTarget) return;
+
+        try {
+            setLoading(true);
+            const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${deleteTarget}`, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            const data = await getRes.json();
+
+            const delRes = await fetch(`https://api.github.com/repos/${repo}/contents/${deleteTarget}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: `Delete ${deleteTarget}`,
+                    sha: data.sha
+                })
+            });
+
+            if (!delRes.ok) throw new Error('Gagal hapus');
+
+            setStatus(`✅ ${deleteTarget} berhasil dihapus`, '#6f9e7b');
+            deleteModal.classList.remove('active');
+            deleteTarget = null;
+            fetchFiles();
+
+        } catch (err) {
+            setStatus('❌ ' + err.message, '#d47a7a');
+        }
+    });
+
+    // ---- EVENT LISTENER ----
+    connectBtn.addEventListener('click', connectRepo);
+    disconnectBtn.addEventListener('click', disconnectRepo);
+    refreshBtn.addEventListener('click', fetchFiles);
+    uploadBtn.addEventListener('click', uploadFile);
+
+    // Enter key pada setup
+    tokenInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') connectRepo(); });
+    repoInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') connectRepo(); });
+
+    // ---- LOAD ----
+    loadSettings();
+
+    // ---- TUTUP MODAL KLIK LUAR ----
+    document.querySelectorAll('.modal-overlay').forEach(el => {
+        el.addEventListener('click', (e) => {
+            if (e.target === el) {
+                el.classList.remove('active');
+                renameTarget = null;
+                deleteTarget = null;
             }
-        }
-
-        // ---- EVENT LISTENER ----
-        refreshBtn.addEventListener('click', function() {
-            fetchData();
         });
+    });
 
-        toggleAutoBtn.addEventListener('click', toggleAutoUpdate);
-
-        // ---- LOAD PERTAMA ----
-        fetchData();
-        startAutoUpdate();
-
-        // ---- TAMPILAN AWAL ----
-        toggleAutoBtn.textContent = '⏸️ Matikan Auto-Update';
-        toggleAutoBtn.classList.remove('btn-primary');
-        toggleAutoBtn.classList.add('btn-outline');
-
-        // ---- HANDLE ERROR JIKA NETWORK OFFLINE ----
-        window.addEventListener('online', function() {
-            statusText.textContent = '📶 Kembali online, refresh data...';
-            fetchData();
-        });
-
-        console.log('✅ Halaman siap! Data akan update otomatis tiap 60 detik.');
-    </script>
+    console.log('✅ File Manager siap!');
+</script>
 
 </body>
 </html>
