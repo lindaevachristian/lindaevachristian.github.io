@@ -16,7 +16,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 700px;
+            max-width: 900px;
             width: 100%;
             background: #fff;
             border-radius: 24px;
@@ -101,6 +101,12 @@
         .btn-gold:hover {
             background: #b8895e;
         }
+        .btn-danger {
+            background: #c0392b;
+        }
+        .btn-danger:hover {
+            background: #962d22;
+        }
         .result-box {
             margin-top: 20px;
             padding: 16px;
@@ -134,7 +140,7 @@
         }
         .btn-group {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
             margin-top: 12px;
         }
@@ -148,10 +154,75 @@
             color: #8a7a68;
             margin-bottom: 10px;
         }
-        @media (max-width: 480px) {
+
+        /* History Styles */
+        .history-section {
+            margin-top: 30px;
+            border-top: 2px solid #e0d6cc;
+            padding-top: 20px;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .history-header h2 {
+            color: #2d2419;
+            font-size: 1.2rem;
+        }
+        .history-header .btn-small {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            width: auto;
+        }
+        .history-table-wrapper {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e0d6cc;
+            border-radius: 12px;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .history-table th {
+            background: #2d5a3d;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .history-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e8e0d8;
+        }
+        .history-table tr:hover {
+            background: #f6f2ec;
+        }
+        .history-table .no-data {
+            text-align: center;
+            color: #8a7a68;
+            padding: 20px;
+        }
+        .history-table .result-number {
+            font-weight: 700;
+            color: #2d5a3d;
+        }
+        .history-table .output-number {
+            font-weight: 700;
+            font-family: monospace;
+            color: #2d2419;
+        }
+        @media (max-width: 600px) {
             .container { padding: 20px 16px; }
             .input-row input { padding: 12px; font-size: 1.1rem; }
             .btn-group { grid-template-columns: 1fr; }
+            .history-table { font-size: 0.7rem; }
+            .history-table th, .history-table td { padding: 6px 8px; }
         }
     </style>
 </head>
@@ -195,6 +266,31 @@
         <div class="btn-group">
             <button class="btn btn-gold" id="copyBtn">📋 Copy</button>
             <button class="btn btn-gold" id="exportBtn">⬇️ Export TXT</button>
+            <button class="btn btn-gold" id="saveHistoryBtn">💾 Simpan Histori</button>
+        </div>
+    </div>
+
+    <!-- History Section -->
+    <div class="history-section">
+        <div class="history-header">
+            <h2>📜 Histori</h2>
+            <button class="btn btn-danger btn-small" id="clearHistoryBtn">🗑️ Hapus Semua</button>
+        </div>
+        <div class="history-table-wrapper">
+            <table class="history-table" id="historyTable">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Result</th>
+                        <th>Nomor Keluar</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody">
+                    <tr>
+                        <td colspan="3" class="no-data">Belum ada histori</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -212,6 +308,35 @@
     var countInfo = document.getElementById('countInfo');
     var copyBtn = document.getElementById('copyBtn');
     var exportBtn = document.getElementById('exportBtn');
+    var saveHistoryBtn = document.getElementById('saveHistoryBtn');
+    var clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    var historyBody = document.getElementById('historyBody');
+
+    // ===== STATE =====
+    var currentResult = [];
+    var history = [];
+
+    // ===== LOAD HISTORY FROM LOCALSTORAGE =====
+    function loadHistory() {
+        try {
+            var stored = localStorage.getItem('totoMacauHistory');
+            if (stored) {
+                history = JSON.parse(stored);
+                renderHistory();
+            }
+        } catch (e) {
+            console.error('Error loading history:', e);
+        }
+    }
+
+    // ===== SAVE HISTORY TO LOCALSTORAGE =====
+    function saveHistoryToStorage() {
+        try {
+            localStorage.setItem('totoMacauHistory', JSON.stringify(history));
+        } catch (e) {
+            console.error('Error saving history:', e);
+        }
+    }
 
     // ===== GENERATE =====
     function generate() {
@@ -312,6 +437,8 @@
             }
         }
 
+        currentResult = final;
+
         // === RENDER ===
         var html = '';
         for (var i = 0; i < final.length; i++) {
@@ -324,6 +451,72 @@
         resultList.innerHTML = html;
         countInfo.textContent = final.length + ' set';
         resultBox.classList.add('active');
+    }
+
+    // ===== SAVE TO HISTORY =====
+    function saveToHistory() {
+        if (currentResult.length === 0) {
+            alert('Generate angka terlebih dahulu!');
+            return;
+        }
+
+        var now = new Date();
+        var dateStr = now.getFullYear() + '-' + 
+                      String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                      String(now.getDate()).padStart(2, '0') + ' ' + 
+                      String(now.getHours()).padStart(2, '0') + ':' + 
+                      String(now.getMinutes()).padStart(2, '0') + ':' + 
+                      String(now.getSeconds()).padStart(2, '0') + '.' + 
+                      String(now.getMilliseconds()).padStart(3, '0');
+
+        // Generate result number (increment from last or random)
+        var lastResult = history.length > 0 ? history[0].result : 0;
+        var resultNumber = lastResult + 1;
+
+        // Get output number (first 4 digits from current result)
+        var outputNumber = '';
+        if (currentResult.length > 0) {
+            outputNumber = currentResult[0].join('');
+        } else {
+            outputNumber = '0000';
+        }
+
+        var entry = {
+            date: dateStr,
+            result: resultNumber,
+            output: outputNumber
+        };
+
+        history.unshift(entry);
+        saveHistoryToStorage();
+        renderHistory();
+    }
+
+    // ===== RENDER HISTORY =====
+    function renderHistory() {
+        if (history.length === 0) {
+            historyBody.innerHTML = '<tr><td colspan="3" class="no-data">Belum ada histori</td></tr>';
+            return;
+        }
+
+        var html = '';
+        for (var i = 0; i < history.length; i++) {
+            html += '<tr>';
+            html += '<td>' + history[i].date + '</td>';
+            html += '<td class="result-number">' + history[i].result + '</td>';
+            html += '<td class="output-number">' + history[i].output + '</td>';
+            html += '</tr>';
+        }
+        historyBody.innerHTML = html;
+    }
+
+    // ===== CLEAR HISTORY =====
+    function clearHistory() {
+        if (confirm('Yakin ingin menghapus semua histori?')) {
+            history = [];
+            saveHistoryToStorage();
+            renderHistory();
+        }
     }
 
     // ===== COPY =====
@@ -368,8 +561,11 @@
     genBtn.addEventListener('click', generate);
     copyBtn.addEventListener('click', copyAll);
     exportBtn.addEventListener('click', exportTxt);
+    saveHistoryBtn.addEventListener('click', saveToHistory);
+    clearHistoryBtn.addEventListener('click', clearHistory);
 
-    // Auto generate pertama
+    // ===== AUTO LOAD =====
+    loadHistory();
     setTimeout(generate, 300);
 </script>
 
