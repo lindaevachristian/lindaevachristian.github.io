@@ -3,571 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulasi Toto Macau</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0ece6;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            width: 100%;
-            background: #fff;
-            border-radius: 24px;
-            padding: 30px 28px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-        }
-        h1 {
-            text-align: center;
-            color: #2d2419;
-            font-size: 1.6rem;
-            margin-bottom: 4px;
-        }
-        .sub {
-            text-align: center;
-            color: #8a7a68;
-            font-size: 0.85rem;
-            margin-bottom: 24px;
-        }
-        .badge {
-            display: inline-block;
-            background: #2d5a3d;
-            color: #fff;
-            padding: 2px 14px;
-            border-radius: 40px;
-            font-size: 0.6rem;
-            margin-top: 4px;
-        }
-        .form-group {
-            margin-bottom: 16px;
-        }
-        .form-group label {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #2d2419;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .input-row {
-            display: flex;
-            gap: 10px;
-        }
-        .input-row input {
-            flex: 1;
-            padding: 14px;
-            border: 2px solid #e0d6cc;
-            border-radius: 14px;
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            outline: none;
-        }
-        .input-row input:focus {
-            border-color: #2d5a3d;
-        }
-        select {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #e0d6cc;
-            border-radius: 14px;
-            font-size: 1rem;
-            outline: none;
-        }
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 40px;
-            background: #2d5a3d;
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn:hover {
-            background: #1a3a2b;
-            transform: scale(1.01);
-        }
-        .btn-gold {
-            background: #d4a373;
-        }
-        .btn-gold:hover {
-            background: #b8895e;
-        }
-        .btn-danger {
-            background: #c0392b;
-        }
-        .btn-danger:hover {
-            background: #962d22;
-        }
-        .result-box {
-            margin-top: 20px;
-            padding: 16px;
-            background: #f6f2ec;
-            border-radius: 16px;
-            display: none;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .result-box.active {
-            display: block;
-        }
-        .result-item {
-            background: #fff;
-            padding: 10px 14px;
-            border-radius: 10px;
-            margin-bottom: 6px;
-            font-family: monospace;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border: 1px solid #e8e0d8;
-            display: flex;
-            justify-content: space-between;
-        }
-        .result-item .num {
-            color: #2d2419;
-        }
-        .result-item .idx {
-            color: #8a7a68;
-            font-size: 0.7rem;
-        }
-        .btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-top: 12px;
-        }
-        .btn-group .btn {
-            padding: 12px;
-            font-size: 0.85rem;
-        }
-        .count-info {
-            text-align: right;
-            font-size: 0.8rem;
-            color: #8a7a68;
-            margin-bottom: 10px;
-        }
-
-        /* History Styles */
-        .history-section {
-            margin-top: 30px;
-            border-top: 2px solid #e0d6cc;
-            padding-top: 20px;
-        }
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .history-header h2 {
-            color: #2d2419;
-            font-size: 1.2rem;
-        }
-        .history-header .btn-small {
-            padding: 8px 16px;
-            font-size: 0.8rem;
-            width: auto;
-        }
-        .history-table-wrapper {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #e0d6cc;
-            border-radius: 12px;
-        }
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-        .history-table th {
-            background: #2d5a3d;
-            color: #fff;
-            padding: 10px 12px;
-            text-align: left;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        .history-table td {
-            padding: 8px 12px;
-            border-bottom: 1px solid #e8e0d8;
-        }
-        .history-table tr:hover {
-            background: #f6f2ec;
-        }
-        .history-table .no-data {
-            text-align: center;
-            color: #8a7a68;
-            padding: 20px;
-        }
-        .history-table .result-number {
-            font-weight: 700;
-            color: #2d5a3d;
-        }
-        .history-table .output-number {
-            font-weight: 700;
-            font-family: monospace;
-            color: #2d2419;
-        }
-        @media (max-width: 600px) {
-            .container { padding: 20px 16px; }
-            .input-row input { padding: 12px; font-size: 1.1rem; }
-            .btn-group { grid-template-columns: 1fr; }
-            .history-table { font-size: 0.7rem; }
-            .history-table th, .history-table td { padding: 6px 8px; }
-        }
-    </style>
+    <title>Analisis Toto Macau - Prediksi & Statistik</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
-<div class="container">
-    <h1>🎯 Toto Macau Simulator</h1>
-    <div class="sub">Edukasi Matematika <span class="badge">Bukan Judi</span></div>
-
-    <div class="form-group">
-        <label>📝 Masukkan 4 Angka Terakhir</label>
-        <div class="input-row">
-            <input type="number" id="n1" min="0" max="9" value="1">
-            <input type="number" id="n2" min="0" max="9" value="2">
-            <input type="number" id="n3" min="0" max="9" value="3">
-            <input type="number" id="n4" min="0" max="9" value="4">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="#"><i class="fas fa-chart-line"></i> TotoMacau<span>Analyst</span></a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#data">Data</a></li>
+                <li><a href="#analysis">Analisis</a></li>
+                <li><a href="#predict">Prediksi</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    <div class="form-group">
-        <label>📊 Jumlah Set</label>
-        <select id="totalSet">
-            <option value="10">10 Set</option>
-            <option value="20">20 Set</option>
-            <option value="30">30 Set</option>
-            <option value="40">40 Set</option>
-            <option value="50" selected>50 Set</option>
-            <option value="60">60 Set</option>
-            <option value="70">70 Set</option>
-            <option value="80">80 Set</option>
-            <option value="90">90 Set</option>
-            <option value="100">100 Set</option>
-        </select>
-    </div>
-
-    <button class="btn" id="genBtn">🚀 Generate Angka Jadi</button>
-
-    <div class="result-box" id="resultBox">
-        <div class="count-info" id="countInfo">0 set</div>
-        <div id="resultList"></div>
-        <div class="btn-group">
-            <button class="btn btn-gold" id="copyBtn">📋 Copy</button>
-            <button class="btn btn-gold" id="exportBtn">⬇️ Export TXT</button>
-            <button class="btn btn-gold" id="saveHistoryBtn">💾 Simpan Histori</button>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Analisis Toto Macau</h1>
+                <p>Pantau pola, analisis frekuensi, dan dapatkan prediksi berbasis data</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalDraws">0</span>
+                        <span class="stat-label">Total Undian</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="hotNumbers">-</span>
+                        <span class="stat-label">Angka Panas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="coldNumbers">-</span>
+                        <span class="stat-label">Angka Dingin</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- History Section -->
-    <div class="history-section">
-        <div class="history-header">
-            <h2>📜 Histori</h2>
-            <button class="btn btn-danger btn-small" id="clearHistoryBtn">🗑️ Hapus Semua</button>
+    <!-- Data Input Section -->
+    <section id="data" class="data-section">
+        <div class="container">
+            <h2 class="section-title">📊 Input Data Undian</h2>
+            <p class="section-subtitle">Masukkan hasil undian terbaru untuk analisis yang lebih akurat</p>
+            
+            <div class="input-container">
+                <div class="input-group">
+                    <label>Tanggal</label>
+                    <input type="date" id="drawDate" value="2024-01-01">
+                </div>
+                <div class="input-group">
+                    <label>Periode</label>
+                    <input type="text" id="drawPeriod" placeholder="Contoh: MACAU-001" value="MACAU-001">
+                </div>
+                <div class="input-group">
+                    <label>4D Result</label>
+                    <div class="number-inputs">
+                        <input type="number" id="num1" min="0" max="9" placeholder="0" maxlength="1">
+                        <input type="number" id="num2" min="0" max="9" placeholder="0" maxlength="1">
+                        <input type="number" id="num3" min="0" max="9" placeholder="0" maxlength="1">
+                        <input type="number" id="num4" min="0" max="9" placeholder="0" maxlength="1">
+                    </div>
+                </div>
+                <button onclick="addDraw()" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Tambahkan Data
+                </button>
+            </div>
+
+            <div class="data-table-wrapper">
+                <h3>Data Historis</h3>
+                <div class="table-responsive">
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Periode</th>
+                                <th>Result (4D)</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <button onclick="loadSampleData()" class="btn btn-secondary">
+                    <i class="fas fa-database"></i> Muat Data Sample
+                </button>
+                <button onclick="clearAllData()" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Hapus Semua
+                </button>
+            </div>
         </div>
-        <div class="history-table-wrapper">
-            <table class="history-table" id="historyTable">
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        <th>Result</th>
-                        <th>Nomor Keluar</th>
-                    </tr>
-                </thead>
-                <tbody id="historyBody">
-                    <tr>
-                        <td colspan="3" class="no-data">Belum ada histori</td>
-                    </tr>
-                </tbody>
-            </table>
+    </section>
+
+    <!-- Analysis Section -->
+    <section id="analysis" class="analysis-section">
+        <div class="container">
+            <h2 class="section-title">📈 Analisis Frekuensi</h2>
+            <p class="section-subtitle">Analisis statistik dari data historis yang telah dimasukkan</p>
+            
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <h3><i class="fas fa-fire"></i> Angka Panas (Hot)</h3>
+                    <div id="hotNumbersList" class="number-list">
+                        <p class="empty-message">Belum ada data untuk dianalisis</p>
+                    </div>
+                </div>
+                <div class="analysis-card">
+                    <h3><i class="fas fa-snowflake"></i> Angka Dingin (Cold)</h3>
+                    <div id="coldNumbersList" class="number-list">
+                        <p class="empty-message">Belum ada data untuk dianalisis</p>
+                    </div>
+                </div>
+                <div class="analysis-card analysis-full">
+                    <h3><i class="fas fa-chart-bar"></i> Frekuensi Lengkap</h3>
+                    <div id="frequencyChart" class="frequency-chart">
+                        <p class="empty-message">Belum ada data untuk dianalisis</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </section>
 
-<script>
-    // ===== ELEMEN =====
-    var n1 = document.getElementById('n1');
-    var n2 = document.getElementById('n2');
-    var n3 = document.getElementById('n3');
-    var n4 = document.getElementById('n4');
-    var totalSet = document.getElementById('totalSet');
-    var genBtn = document.getElementById('genBtn');
-    var resultBox = document.getElementById('resultBox');
-    var resultList = document.getElementById('resultList');
-    var countInfo = document.getElementById('countInfo');
-    var copyBtn = document.getElementById('copyBtn');
-    var exportBtn = document.getElementById('exportBtn');
-    var saveHistoryBtn = document.getElementById('saveHistoryBtn');
-    var clearHistoryBtn = document.getElementById('clearHistoryBtn');
-    var historyBody = document.getElementById('historyBody');
+    <!-- Prediction Section -->
+    <section id="predict" class="predict-section">
+        <div class="container">
+            <h2 class="section-title">🔮 Prediksi</h2>
+            <p class="section-subtitle">Prediksi berdasarkan analisis data terkini</p>
+            
+            <div class="predict-container">
+                <div class="predict-method">
+                    <h3>Metode Analisis</h3>
+                    <div class="method-options">
+                        <label class="method-label">
+                            <input type="radio" name="method" value="frequency" checked>
+                            <span>Frekuensi</span>
+                        </label>
+                        <label class="method-label">
+                            <input type="radio" name="method" value="pattern">
+                            <span>Pola</span>
+                        </label>
+                        <label class="method-label">
+                            <input type="radio" name="method" value="combined">
+                            <span>Kombinasi</span>
+                        </label>
+                    </div>
+                    <button onclick="generatePrediction()" class="btn btn-primary btn-large">
+                        <i class="fas fa-magic"></i> Hasilkan Prediksi
+                    </button>
+                </div>
+                
+                <div class="predict-result">
+                    <h3>Hasil Prediksi</h3>
+                    <div id="predictionResult" class="prediction-numbers">
+                        <p class="empty-message">Klik tombol di samping untuk menghasilkan prediksi</p>
+                    </div>
+                    <div id="predictionExplanation" class="prediction-explanation"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // ===== STATE =====
-    var currentResult = [];
-    var history = [];
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 TotoMacau Analyst. <span class="disclaimer">⚠️ Prediksi hanya berdasarkan analisis statistik, tidak menjamin kemenangan. Gunakan dengan bijak.</span></p>
+        </div>
+    </footer>
 
-    // ===== LOAD HISTORY FROM LOCALSTORAGE =====
-    function loadHistory() {
-        try {
-            var stored = localStorage.getItem('totoMacauHistory');
-            if (stored) {
-                history = JSON.parse(stored);
-                renderHistory();
-            }
-        } catch (e) {
-            console.error('Error loading history:', e);
-        }
-    }
-
-    // ===== SAVE HISTORY TO LOCALSTORAGE =====
-    function saveHistoryToStorage() {
-        try {
-            localStorage.setItem('totoMacauHistory', JSON.stringify(history));
-        } catch (e) {
-            console.error('Error saving history:', e);
-        }
-    }
-
-    // ===== GENERATE =====
-    function generate() {
-        var a = parseInt(n1.value) || 0;
-        var b = parseInt(n2.value) || 0;
-        var c = parseInt(n3.value) || 0;
-        var d = parseInt(n4.value) || 0;
-
-        if (a < 0 || a > 9 || b < 0 || b > 9 || c < 0 || c > 9 || d < 0 || d > 9) {
-            alert('Masukkan angka 0-9!');
-            return;
-        }
-
-        var total = parseInt(totalSet.value) || 50;
-        var results = [];
-
-        // === RUMUS ===
-        var formulas = [];
-
-        // 1. Penjumlahan
-        formulas.push([(a+b)%10, (b+c)%10, (c+d)%10, (a+d)%10]);
-        formulas.push([(a+c)%10, (b+d)%10, (a+b+c)%10, (b+c+d)%10]);
-        formulas.push([(a+b+c)%10, (a+b+d)%10, (a+c+d)%10, (b+c+d)%10]);
-
-        // 2. Pengurangan
-        formulas.push([Math.abs(a-b), Math.abs(b-c), Math.abs(c-d), Math.abs(a-d)]);
-        formulas.push([Math.abs(a-c), Math.abs(b-d), Math.abs(a-d), Math.abs(b-c)]);
-
-        // 3. Perkalian
-        formulas.push([(a*b)%10, (b*c)%10, (c*d)%10, (a*d)%10]);
-
-        // 4. Tesson
-        var sum = a+b+c+d;
-        var t = sum % 10;
-        formulas.push([t, (t+1)%10, (t+2)%10, (t+3)%10]);
-        formulas.push([(a+t)%10, (b+t)%10, (c+t)%10, (d+t)%10]);
-
-        // 5. Mistis
-        for (var i = 1; i <= 5; i++) {
-            formulas.push([(a+i)%10, (b+i)%10, (c+i)%10, (d+i)%10]);
-        }
-
-        // 6. Kombinasi
-        formulas.push([(a+b+c+d)%10, (a*b+c*d)%10, (a+b)*(c+d)%10, (a*b*c*d)%10]);
-
-        // 7. Pola genap/ganjil
-        var genap = [0,2,4,6,8];
-        var ganjil = [1,3,5,7,9];
-        formulas.push([genap[Math.floor(Math.random()*5)], genap[Math.floor(Math.random()*5)], genap[Math.floor(Math.random()*5)], genap[Math.floor(Math.random()*5)]]);
-        formulas.push([ganjil[Math.floor(Math.random()*5)], ganjil[Math.floor(Math.random()*5)], ganjil[Math.floor(Math.random()*5)], ganjil[Math.floor(Math.random()*5)]]);
-
-        // 8. Random berbobot
-        for (var r = 0; r < 30; r++) {
-            var base = formulas[Math.floor(Math.random() * formulas.length)];
-            formulas.push([
-                (base[0] + Math.floor(Math.random()*3)) % 10,
-                (base[1] + Math.floor(Math.random()*3)) % 10,
-                (base[2] + Math.floor(Math.random()*3)) % 10,
-                (base[3] + Math.floor(Math.random()*3)) % 10
-            ]);
-        }
-
-        // === UNIK ===
-        var seen = {};
-        var unique = [];
-        for (var f = 0; f < formulas.length; f++) {
-            var key = formulas[f].join(',');
-            if (!seen[key]) {
-                seen[key] = true;
-                unique.push(formulas[f]);
-            }
-        }
-
-        // === SHUFFLE ===
-        for (var s = unique.length - 1; s > 0; s--) {
-            var j = Math.floor(Math.random() * (s + 1));
-            var temp = unique[s];
-            unique[s] = unique[j];
-            unique[j] = temp;
-        }
-
-        // === AMBIL ===
-        var final = unique.slice(0, Math.min(total, unique.length));
-
-        // Tambah variasi jika kurang
-        while (final.length < total) {
-            var base2 = final[Math.floor(Math.random() * final.length)] || [0,0,0,0];
-            var variant = [
-                (base2[0] + Math.floor(Math.random()*4)) % 10,
-                (base2[1] + Math.floor(Math.random()*4)) % 10,
-                (base2[2] + Math.floor(Math.random()*4)) % 10,
-                (base2[3] + Math.floor(Math.random()*4)) % 10
-            ];
-            var key2 = variant.join(',');
-            if (!seen[key2]) {
-                seen[key2] = true;
-                final.push(variant);
-            }
-        }
-
-        currentResult = final;
-
-        // === RENDER ===
-        var html = '';
-        for (var i = 0; i < final.length; i++) {
-            html += '<div class="result-item">';
-            html += '<span class="num">' + final[i].join(' ') + '</span>';
-            html += '<span class="idx">#' + (i+1) + '</span>';
-            html += '</div>';
-        }
-
-        resultList.innerHTML = html;
-        countInfo.textContent = final.length + ' set';
-        resultBox.classList.add('active');
-    }
-
-    // ===== SAVE TO HISTORY =====
-    function saveToHistory() {
-        if (currentResult.length === 0) {
-            alert('Generate angka terlebih dahulu!');
-            return;
-        }
-
-        var now = new Date();
-        var dateStr = now.getFullYear() + '-' + 
-                      String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-                      String(now.getDate()).padStart(2, '0') + ' ' + 
-                      String(now.getHours()).padStart(2, '0') + ':' + 
-                      String(now.getMinutes()).padStart(2, '0') + ':' + 
-                      String(now.getSeconds()).padStart(2, '0') + '.' + 
-                      String(now.getMilliseconds()).padStart(3, '0');
-
-        // Generate result number (increment from last or random)
-        var lastResult = history.length > 0 ? history[0].result : 0;
-        var resultNumber = lastResult + 1;
-
-        // Get output number (first 4 digits from current result)
-        var outputNumber = '';
-        if (currentResult.length > 0) {
-            outputNumber = currentResult[0].join('');
-        } else {
-            outputNumber = '0000';
-        }
-
-        var entry = {
-            date: dateStr,
-            result: resultNumber,
-            output: outputNumber
-        };
-
-        history.unshift(entry);
-        saveHistoryToStorage();
-        renderHistory();
-    }
-
-    // ===== RENDER HISTORY =====
-    function renderHistory() {
-        if (history.length === 0) {
-            historyBody.innerHTML = '<tr><td colspan="3" class="no-data">Belum ada histori</td></tr>';
-            return;
-        }
-
-        var html = '';
-        for (var i = 0; i < history.length; i++) {
-            html += '<tr>';
-            html += '<td>' + history[i].date + '</td>';
-            html += '<td class="result-number">' + history[i].result + '</td>';
-            html += '<td class="output-number">' + history[i].output + '</td>';
-            html += '</tr>';
-        }
-        historyBody.innerHTML = html;
-    }
-
-    // ===== CLEAR HISTORY =====
-    function clearHistory() {
-        if (confirm('Yakin ingin menghapus semua histori?')) {
-            history = [];
-            saveHistoryToStorage();
-            renderHistory();
-        }
-    }
-
-    // ===== COPY =====
-    function copyAll() {
-        var items = resultList.querySelectorAll('.result-item .num');
-        var text = '';
-        items.forEach(function(el) {
-            text += el.textContent.trim() + '\n';
-        });
-        navigator.clipboard.writeText(text).then(function() {
-            alert('✅ ' + items.length + ' set disalin!');
-        }).catch(function() {
-            var ta = document.createElement('textarea');
-            ta.value = text;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            alert('✅ Disalin!');
-        });
-    }
-
-    // ===== EXPORT =====
-    function exportTxt() {
-        var items = resultList.querySelectorAll('.result-item .num');
-        var text = '=== ANGKA JADI ===\n';
-        items.forEach(function(el, i) {
-            text += (i+1) + '. ' + el.textContent.trim() + '\n';
-        });
-        var blob = new Blob([text], {type: 'text/plain'});
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'angka_jadi.txt';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
-
-    // ===== EVENT =====
-    genBtn.addEventListener('click', generate);
-    copyBtn.addEventListener('click', copyAll);
-    exportBtn.addEventListener('click', exportTxt);
-    saveHistoryBtn.addEventListener('click', saveToHistory);
-    clearHistoryBtn.addEventListener('click', clearHistory);
-
-    // ===== AUTO LOAD =====
-    loadHistory();
-    setTimeout(generate, 300);
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
