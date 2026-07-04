@@ -1,715 +1,315 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simulasi Rumus Togel - Edukasi Matematika</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f0ece6;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container { max-width: 1300px; margin: 0 auto; }
-        
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #1a3a2b, #2d5a3d);
-            border-radius: 28px;
-            color: #f5efe8;
-            margin-bottom: 28px;
-        }
-        .header h1 { font-size: 2rem; font-weight: 600; }
-        .header p { opacity: 0.8; margin-top: 6px; }
-        .badge-edu {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            padding: 4px 18px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            margin-top: 10px;
-        }
-
-        /* Grid */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 24px; }
-        @media (max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
-
-        .card {
-            background: #fffcf8;
-            border-radius: 24px;
-            padding: 24px 28px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-            border: 1px solid #ede8e2;
-        }
-        .card h2 {
-            font-size: 1.1rem;
-            color: #2d2419;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .card h2 .icon { font-size: 1.4rem; }
-
-        /* Input */
-        textarea, input[type="number"] {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0d6cc;
-            border-radius: 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            background: #fff;
-            outline: none;
-            transition: 0.25s;
-        }
-        textarea:focus, input:focus {
-            border-color: #2d5a3d;
-            box-shadow: 0 0 0 4px rgba(45, 90, 61, 0.1);
-        }
-        textarea { min-height: 120px; resize: vertical; }
-
-        .btn {
-            padding: 12px 28px;
-            border: none;
-            border-radius: 40px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.25s;
-            background: #dccfc0;
-            color: #2d2419;
-        }
-        .btn-primary { background: #2d5a3d; color: #fff; }
-        .btn-primary:hover { background: #1a3a2b; transform: translateY(-2px); }
-        .btn-gold { background: #d4a373; color: #fff; }
-        .btn-gold:hover { background: #b8895e; transform: translateY(-2px); }
-        .btn-danger { background: #d47a7a; color: #fff; }
-        .btn-danger:hover { background: #b86161; transform: translateY(-2px); }
-        .btn-outline { background: transparent; border: 1.5px solid #2d5a3d; color: #2d5a3d; }
-        .btn-outline:hover { background: #2d5a3d; color: #fff; }
-        .btn-sm { padding: 8px 18px; font-size: 0.8rem; }
-
-        .btn-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
-
-        /* Tabel */
-        .table-wrap { overflow-x: auto; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-        th {
-            text-align: left;
-            padding: 10px 8px;
-            color: #8a7a68;
-            font-weight: 500;
-            border-bottom: 2px solid #ede8e2;
-            position: sticky;
-            top: 0;
-            background: #fffcf8;
-        }
-        td {
-            padding: 8px 8px;
-            border-bottom: 1px solid #f4efe9;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        tr:hover td { background: #faf7f2; }
-        .highlight { color: #2d5a3d; font-weight: 700; }
-        .hot { color: #d47a7a; font-weight: 700; }
-        .cold { color: #7a9bb5; font-weight: 700; }
-
-        /* Prediksi */
-        .prediction-box {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            padding: 12px 0;
-        }
-        .prediction-item {
-            background: #f6f2ec;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            color: #2d2419;
-            border: 2px solid transparent;
-        }
-        .prediction-item.main { border-color: #d4a373; background: #fdf6e3; }
-
-        /* Statistik */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            gap: 6px;
-            margin-top: 8px;
-        }
-        .stat-grid .item {
-            text-align: center;
-            padding: 8px 4px;
-            background: #f6f2ec;
-            border-radius: 10px;
-            font-size: 0.8rem;
-        }
-        .stat-grid .item .num { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; }
-        .stat-grid .item .freq { font-size: 0.7rem; color: #8a7a68; }
-
-        .rumus-box {
-            background: #f6f2ec;
-            border-radius: 16px;
-            padding: 16px 20px;
-            margin-top: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: #2d2419;
-            border-left: 4px solid #2d5a3d;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        @media (max-width: 480px) {
-            .header h1 { font-size: 1.4rem; }
-            .card { padding: 16px; }
-            .stat-grid { grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Toto Macau Pro - 30 Set Prediksi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
-<div class="container">
-
-    <!-- HEADER -->
-    <div class="header">
-        <h1>🧮 Simulasi Rumus Angka Lengkap</h1>
-        <p>Edukasi matematika &amp; logika pola angka</p>
-        <span class="badge-edu">📚 Hanya untuk mengasah otak • Bukan perjudian</span>
-    </div>
-
-    <!-- INPUT DATA -->
-    <div class="grid-2">
-        <div class="card">
-            <h2><span class="icon">📝</span> Input Data Historis</h2>
-            <p style="font-size:0.85rem; color:#8a7a68; margin-bottom:12px;">
-                Masukkan hasil angka sebelumnya (pisahkan dengan spasi atau koma).<br/>
-                Contoh: 1 2 3 4  atau  1,2,3,4
-            </p>
-            <textarea id="dataInput" placeholder="1 2 3 4&#10;5 6 7 8&#10;9 0 1 2">1 2 3 4
-5 6 7 8
-9 0 1 2
-3 4 5 6
-7 8 9 0</textarea>
-            <div class="btn-group">
-                <button class="btn btn-primary" id="prosesBtn">📊 Proses Data</button>
-                <button class="btn btn-outline btn-sm" id="sampleBtn">📋 Contoh Data</button>
-                <button class="btn btn-danger btn-sm" id="clearBtn">🗑️ Hapus</button>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="#"><i class="fas fa-robot"></i> TotoMacau<span>Pro</span></a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#data">Data</a></li>
+                <li><a href="#analysis">Analisis</a></li>
+                <li><a href="#patterns">Pola</a></li>
+                <li><a href="#predict">30 Set Prediksi</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
+    </nav>
 
-        <div class="card">
-            <h2><span class="icon">📈</span> Statistik Data</h2>
-            <div id="statInfo">
-                <p style="color:#8a7a68;">Belum ada data diproses</p>
-            </div>
-            <div style="margin-top:12px;">
-                <div style="font-size:0.8rem; color:#8a7a68;">🔥 Angka Panas (Hot)</div>
-                <div id="hotNumbers" style="font-family:'JetBrains Mono',monospace; padding:8px 0;">-</div>
-                <div style="font-size:0.8rem; color:#8a7a68;">❄️ Angka Dingin (Cold)</div>
-                <div id="coldNumbers" style="font-family:'JetBrains Mono',monospace; padding:8px 0;">-</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- HASIL PREDIKSI -->
-    <div class="grid-2">
-        <div class="card">
-            <h2><span class="icon">🔮</span> Hasil Prediksi</h2>
-            <div id="predictionResult">
-                <p style="color:#8a7a68;">Proses data terlebih dahulu</p>
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-gold" id="predictBtn">🎯 Generate Prediksi</button>
-                <button class="btn btn-outline btn-sm" id="rumusToggleBtn">📐 Tampilkan Rumus</button>
-            </div>
-            <div id="rumusDetail" class="rumus-box" style="display:none;">
-                <div id="rumusContent">Rumus akan ditampilkan di sini</div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2><span class="icon">📊</span> Analisis Korelasi</h2>
-            <div id="korelasiDisplay">
-                <p style="color:#8a7a68;">Proses data untuk melihat korelasi antar posisi</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- TABEL DATA -->
-    <div class="card" style="margin-bottom:24px;">
-        <h2><span class="icon">📋</span> Data Historis</h2>
-        <div class="table-wrap">
-            <table id="dataTable">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>P1</th>
-                        <th>P2</th>
-                        <th>P3</th>
-                        <th>P4</th>
-                        <th>Jumlah</th>
-                        <th>Genap</th>
-                        <th>Ganjil</th>
-                    </tr>
-                </thead>
-                <tbody id="dataTableBody">
-                    <tr><td colspan="8" style="text-align:center; color:#8a7a68;">Belum ada data</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
-    <div style="text-align:center; padding:24px 0 12px; font-size:0.8rem; color:#a28e7a;">
-        🧠 Simulasi ini murni untuk edukasi matematika dan logika. Tidak ada kaitan dengan perjudian.
-    </div>
-
-</div>
-
-<script>
-    // ================================================================
-    //  SIMULASI RUMUS ANGKA LENGKAP
-    // ================================================================
-
-    // ---- STATE ----
-    let data = [];
-    let processedData = [];
-    let predictions = [];
-    let showRumus = false;
-
-    // ---- ELEMEN ----
-    const dataInput = document.getElementById('dataInput');
-    const prosesBtn = document.getElementById('prosesBtn');
-    const sampleBtn = document.getElementById('sampleBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    const predictBtn = document.getElementById('predictBtn');
-    const rumusToggleBtn = document.getElementById('rumusToggleBtn');
-    const dataTableBody = document.getElementById('dataTableBody');
-    const statInfo = document.getElementById('statInfo');
-    const hotNumbers = document.getElementById('hotNumbers');
-    const coldNumbers = document.getElementById('coldNumbers');
-    const predictionResult = document.getElementById('predictionResult');
-    const korelasiDisplay = document.getElementById('korelasiDisplay');
-    const rumusDetail = document.getElementById('rumusDetail');
-    const rumusContent = document.getElementById('rumusContent');
-
-    // ---- FUNGSI UTAMA ----
-    function parseData(text) {
-        const lines = text.split('\n').filter(line => line.trim());
-        const result = [];
-        for (const line of lines) {
-            const nums = line.split(/[\s,;]+/).filter(s => s !== '').map(Number);
-            if (nums.length >= 4 && nums.every(n => !isNaN(n) && n >= 0 && n <= 9)) {
-                result.push(nums.slice(0, 4));
-            }
-        }
-        return result;
-    }
-
-    function processData() {
-        const raw = dataInput.value;
-        data = parseData(raw);
-        
-        if (data.length === 0) {
-            alert('⚠️ Data tidak valid! Masukkan minimal 1 set angka (4 digit 0-9)');
-            return;
-        }
-
-        processedData = data;
-        renderTable();
-        updateStats();
-        updateHotCold();
-        updateKorelasi();
-        generatePredictions();
-        renderPredictions();
-        
-        document.getElementById('statInfo').innerHTML = `
-            <p>✅ ${data.length} set data diproses</p>
-            <p style="font-size:0.85rem; color:#8a7a68;">
-                Terakhir: ${data[data.length-1].join(' ')}
-            </p>
-        `;
-    }
-
-    // ---- RENDER TABEL ----
-    function renderTable() {
-        if (processedData.length === 0) {
-            dataTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#8a7a68;">Belum ada data</td></tr>`;
-            return;
-        }
-
-        let html = '';
-        processedData.forEach((row, i) => {
-            const sum = row.reduce((a, b) => a + b, 0);
-            const even = row.filter(n => n % 2 === 0).length;
-            const odd = row.filter(n => n % 2 === 1).length;
-            html += `
-                <tr>
-                    <td>${i + 1}</td>
-                    <td>${row[0]}</td>
-                    <td>${row[1]}</td>
-                    <td>${row[2]}</td>
-                    <td>${row[3]}</td>
-                    <td>${sum}</td>
-                    <td>${even}</td>
-                    <td>${odd}</td>
-                </tr>
-            `;
-        });
-        dataTableBody.innerHTML = html;
-    }
-
-    // ---- UPDATE STATISTIK ----
-    function updateStats() {
-        if (processedData.length === 0) return;
-
-        const stats = [];
-        for (let pos = 0; pos < 4; pos++) {
-            const vals = processedData.map(row => row[pos]);
-            const min = Math.min(...vals);
-            const max = Math.max(...vals);
-            const mean = (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1);
-            const mode = getMode(vals);
-            const freq = getFrequency(vals);
-            stats.push({ min, max, mean, mode, freq });
-        }
-
-        // Tampilkan di statInfo
-        let html = `
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.85rem;">
-                <div><strong>Posisi</strong></div>
-                <div><strong>Min / Max / Mean / Modus</strong></div>
-        `;
-        stats.forEach((s, i) => {
-            html += `
-                <div>P${i+1}</div>
-                <div>${s.min} / ${s.max} / ${s.mean} / ${s.mode}</div>
-            `;
-        });
-        html += '</div>';
-        statInfo.innerHTML = html;
-    }
-
-    function getMode(arr) {
-        const freq = {};
-        arr.forEach(n => freq[n] = (freq[n] || 0) + 1);
-        let maxFreq = 0, mode = arr[0];
-        for (const key in freq) {
-            if (freq[key] > maxFreq) {
-                maxFreq = freq[key];
-                mode = key;
-            }
-        }
-        return mode;
-    }
-
-    function getFrequency(arr) {
-        const freq = {};
-        arr.forEach(n => freq[n] = (freq[n] || 0) + 1);
-        return freq;
-    }
-
-    // ---- HOT & COLD ----
-    function updateHotCold() {
-        if (processedData.length === 0) {
-            hotNumbers.textContent = '-';
-            coldNumbers.textContent = '-';
-            return;
-        }
-
-        // Gabungkan semua angka
-        const all = processedData.flat();
-        const freq = getFrequency(all);
-        
-        // Urutkan berdasarkan frekuensi
-        const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
-        const hot = sorted.slice(0, 5);
-        const cold = sorted.slice(-5).reverse();
-
-        hotNumbers.textContent = hot.map(([num, count]) => `${num}(${count})`).join(' ');
-        coldNumbers.textContent = cold.map(([num, count]) => `${num}(${count})`).join(' ');
-    }
-
-    // ---- KORELASI ----
-    function updateKorelasi() {
-        if (processedData.length < 2) {
-            korelasiDisplay.innerHTML = '<p style="color:#8a7a68;">Minimal 2 data untuk korelasi</p>';
-            return;
-        }
-
-        let html = '<div style="font-size:0.85rem;">';
-        for (let i = 0; i < 4; i++) {
-            for (let j = i + 1; j < 4; j++) {
-                const corr = calculateCorrelation(i, j);
-                const label = corr > 0.5 ? '✅ Kuat' : corr > 0.3 ? '🟡 Sedang' : '🔵 Lemah';
-                const color = corr > 0.5 ? '#2d5a3d' : corr > 0.3 ? '#d4a373' : '#7a9bb5';
-                html += `
-                    <div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #f4efe9;">
-                        <span>P${i+1} ⇔ P${j+1}</span>
-                        <span style="color:${color}; font-weight:700;">${corr.toFixed(3)} ${label}</span>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Analisis Toto Macau <span class="highlight">Pro</span></h1>
+                <p>30 Set Prediksi dengan 12 Metode Analisis • Pola Index • Mistis • Tenson • Shio</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalDraws">0</span>
+                        <span class="stat-label">Total Undian</span>
                     </div>
-                `;
-            }
-        }
-        html += '</div>';
-        korelasiDisplay.innerHTML = html;
-    }
-
-    function calculateCorrelation(pos1, pos2) {
-        const x = processedData.map(row => row[pos1]);
-        const y = processedData.map(row => row[pos2]);
-        const n = x.length;
-        
-        const sumX = x.reduce((a, b) => a + b, 0);
-        const sumY = y.reduce((a, b) => a + b, 0);
-        const sumXY = x.reduce((a, b, i) => a + b * y[i], 0);
-        const sumX2 = x.reduce((a, b) => a + b * b, 0);
-        const sumY2 = y.reduce((a, b) => a + b * b, 0);
-        
-        const corr = (n * sumXY - sumX * sumY) / 
-                     Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
-        return corr || 0;
-    }
-
-    // ---- GENERATE PREDICTIONS ----
-    function generatePredictions() {
-        if (processedData.length === 0) return;
-
-        predictions = [];
-        
-        // 1. Berdasarkan modus per posisi
-        const modePred = [];
-        for (let pos = 0; pos < 4; pos++) {
-            const vals = processedData.map(row => row[pos]);
-            modePred.push(parseInt(getMode(vals)));
-        }
-        predictions.push({ name: 'Modus', nums: modePred });
-
-        // 2. Berdasarkan rata-rata (pembulatan)
-        const meanPred = [];
-        for (let pos = 0; pos < 4; pos++) {
-            const vals = processedData.map(row => row[pos]);
-            const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
-            meanPred.push(Math.round(mean));
-        }
-        predictions.push({ name: 'Rata-rata', nums: meanPred });
-
-        // 3. Angka Panas (Hot)
-        const all = processedData.flat();
-        const freq = getFrequency(all);
-        const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
-        const hotNums = sorted.slice(0, 4).map(([num]) => parseInt(num));
-        while (hotNums.length < 4) hotNums.push(Math.floor(Math.random() * 10));
-        predictions.push({ name: 'Panas (Hot)', nums: hotNums });
-
-        // 4. Angka Dingin (Cold)
-        const coldNums = sorted.slice(-4).map(([num]) => parseInt(num)).reverse();
-        while (coldNums.length < 4) coldNums.push(Math.floor(Math.random() * 10));
-        predictions.push({ name: 'Dingin (Cold)', nums: coldNums });
-
-        // 5. Rumus Tesson (digit terakhir dari jumlah)
-        const last = processedData[processedData.length - 1];
-        const sum = last.reduce((a, b) => a + b, 0);
-        const tesson = [
-            sum % 10,
-            (sum + 1) % 10,
-            (sum + 2) % 10,
-            (sum + 3) % 10
-        ];
-        predictions.push({ name: 'Tesson', nums: tesson });
-
-        // 6. Index Mistis (pola)
-        const mistis = [
-            (last[0] + last[1]) % 10,
-            (last[1] + last[2]) % 10,
-            (last[2] + last[3]) % 10,
-            (last[0] + last[3]) % 10
-        ];
-        predictions.push({ name: 'Mistis', nums: mistis });
-
-        // 7. Fibonacci-like
-        if (processedData.length >= 2) {
-            const prev1 = processedData[processedData.length - 1];
-            const prev2 = processedData[processedData.length - 2];
-            const fibo = [
-                (prev1[0] + prev2[0]) % 10,
-                (prev1[1] + prev2[1]) % 10,
-                (prev1[2] + prev2[2]) % 10,
-                (prev1[3] + prev2[3]) % 10
-            ];
-            predictions.push({ name: 'Fibonacci', nums: fibo });
-        }
-
-        // 8. Colok Bebas (rekomendasi angka per posisi)
-        const colok = [];
-        for (let pos = 0; pos < 4; pos++) {
-            const vals = processedData.map(row => row[pos]);
-            const freq2 = getFrequency(vals);
-            const sorted2 = Object.entries(freq2).sort((a, b) => b[1] - a[1]);
-            colok.push(parseInt(sorted2[0][0]));
-        }
-        predictions.push({ name: 'Colok Bebas', nums: colok });
-    }
-
-    // ---- RENDER PREDICTIONS ----
-    function renderPredictions() {
-        if (predictions.length === 0) {
-            predictionResult.innerHTML = '<p style="color:#8a7a68;">Proses data terlebih dahulu</p>';
-            return;
-        }
-
-        let html = '<div class="prediction-box">';
-        predictions.forEach((pred, i) => {
-            const isMain = i < 2;
-            html += `
-                <div class="prediction-item ${isMain ? 'main' : ''}">
-                    <div style="font-size:0.65rem; color:#8a7a68;">${pred.name}</div>
-                    <div>${pred.nums.join(' ')}</div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="hotNumbers">-</span>
+                        <span class="stat-label">Angka Panas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="coldNumbers">-</span>
+                        <span class="stat-label">Angka Dingin</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="latestPeriod">-</span>
+                        <span class="stat-label">Periode Terakhir</span>
+                    </div>
                 </div>
-            `;
-        });
-        html += '</div>';
-        
-        // Tambahan prediksi 2D/3D/4D
-        const last = processedData[processedData.length - 1];
-        html += `
-            <div style="margin-top:12px; font-size:0.85rem; background:#f6f2ec; padding:12px 16px; border-radius:12px;">
-                <div><strong>2D:</strong> ${last[2]}${last[3]} → ${(last[2]+last[3])%10}${(last[2]*last[3])%10}</div>
-                <div><strong>3D:</strong> ${last[1]}${last[2]}${last[3]} → ${(last[1]+last[2])%10}${(last[2]+last[3])%10}${(last[1]*last[3])%10}</div>
-                <div><strong>4D:</strong> ${last.join(' ')} → ${predictions[0]?.nums.join(' ') || last.join(' ')}</div>
             </div>
-        `;
+        </div>
+    </section>
 
-        predictionResult.innerHTML = html;
-    }
+    <!-- Data Section -->
+    <section id="data" class="data-section">
+        <div class="container">
+            <h2 class="section-title">📊 Data Historis</h2>
+            <p class="section-subtitle">Kelola data undian untuk analisis yang akurat</p>
+            
+            <div class="control-container">
+                <button onclick="loadHistoryData()" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Muat histori.txt
+                </button>
+                <button onclick="loadSampleData()" class="btn btn-secondary">
+                    <i class="fas fa-database"></i> Data Sample
+                </button>
+                <button onclick="clearAllData()" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Hapus Semua
+                </button>
+                <span id="dataStatus" class="data-status">Status: Siap</span>
+            </div>
 
-    // ---- RUMUS DETAIL ----
-    function updateRumus() {
-        if (processedData.length === 0) return;
-
-        const last = processedData[processedData.length - 1];
-        const prev = processedData.length >= 2 ? processedData[processedData.length - 2] : null;
-        
-        let html = `
-            <div style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #e0d6cc;">
-                <strong>Data Terakhir:</strong> ${last.join(' ')}
-            </div>
-            <div style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #e0d6cc;">
-                <strong>Rumus Tesson:</strong> (${last.join(' + ')}) = ${last.reduce((a,b) => a+b, 0)} → 
-                ${last.reduce((a,b) => a+b, 0) % 10} = ${(last.reduce((a,b) => a+b, 0) % 10)}
-            </div>
-            <div style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #e0d6cc;">
-                <strong>Rumus Mistis:</strong> 
-                (${last[0]}+${last[1]})%10 = ${(last[0]+last[1])%10} | 
-                (${last[1]}+${last[2]})%10 = ${(last[1]+last[2])%10} |
-                (${last[2]}+${last[3]})%10 = ${(last[2]+last[3])%10} |
-                (${last[0]}+${last[3]})%10 = ${(last[0]+last[3])%10}
-            </div>
-            <div style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #e0d6cc;">
-                <strong>Angka Index (2D):</strong>
-                ${last[2]}${last[3]} → As:${(last[2]+last[3])%10} Kop:${(last[2]*last[3])%10}
-            </div>
-        `;
-
-        if (prev) {
-            html += `
-                <div style="margin-bottom:8px;">
-                    <strong>Fibonacci:</strong>
-                    (${prev[0]}+${last[0]})%10 = ${(prev[0]+last[0])%10} |
-                    (${prev[1]}+${last[1]})%10 = ${(prev[1]+last[1])%10} |
-                    (${prev[2]}+${last[2]})%10 = ${(prev[2]+last[2])%10} |
-                    (${prev[3]}+${last[3]})%10 = ${(prev[3]+last[3])%10}
+            <div class="input-container">
+                <h3><i class="fas fa-pen"></i> Tambah Data Manual</h3>
+                <div class="input-group">
+                    <label>Tanggal & Waktu</label>
+                    <input type="datetime-local" id="drawDateTime">
                 </div>
-            `;
-        }
+                <div class="input-group">
+                    <label>Periode</label>
+                    <input type="number" id="drawPeriod" placeholder="Contoh: 13645">
+                </div>
+                <div class="input-group">
+                    <label>4D Result</label>
+                    <div class="number-inputs">
+                        <input type="number" id="num1" min="0" max="9" placeholder="0" maxlength="1">
+                        <input type="number" id="num2" min="0" max="9" placeholder="0" maxlength="1">
+                        <input type="number" id="num3" min="0" max="9" placeholder="0" maxlength="1">
+                        <input type="number" id="num4" min="0" max="9" placeholder="0" maxlength="1">
+                    </div>
+                </div>
+                <button onclick="addDraw()" class="btn btn-primary" style="grid-column: 1 / -1;">
+                    <i class="fas fa-plus"></i> Tambahkan Data
+                </button>
+            </div>
 
-        rumusContent.innerHTML = html;
-    }
+            <div class="data-table-wrapper">
+                <h3>Data Historis <span id="dataCount" class="data-count">(0 data)</span></h3>
+                <div class="table-responsive">
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>Tanggal & Waktu</th>
+                                <th>Periode</th>
+                                <th>Result (4D)</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-secondary);">Belum ada data</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // ---- EVENT LISTENER ----
-    prosesBtn.addEventListener('click', function() {
-        processData();
-        updateRumus();
-    });
+    <!-- Analysis Section -->
+    <section id="analysis" class="analysis-section">
+        <div class="container">
+            <h2 class="section-title">📈 Analisis Mendalam</h2>
+            <p class="section-subtitle">Analisis statistik, frekuensi, dan pola pergerakan</p>
+            
+            <div class="analysis-tabs">
+                <button class="tab-btn active" onclick="switchTab('frequency')">
+                    <i class="fas fa-chart-bar"></i> Frekuensi
+                </button>
+                <button class="tab-btn" onclick="switchTab('movement')">
+                    <i class="fas fa-wave-square"></i> Pergerakan
+                </button>
+                <button class="tab-btn" onclick="switchTab('pattern')">
+                    <i class="fas fa-braille"></i> Pola
+                </button>
+            </div>
 
-    sampleBtn.addEventListener('click', function() {
-        dataInput.value = `1 2 3 4
-5 6 7 8
-9 0 1 2
-3 4 5 6
-7 8 9 0
-2 4 6 8
-1 3 5 7
-9 8 7 6
-5 4 3 2
-0 1 2 3
-8 7 6 5
-4 3 2 1
-2 5 8 1
-3 6 9 2
-4 7 0 3
-5 8 1 4
-6 9 2 5
-7 0 3 6
-8 1 4 7
-9 2 5 8`;
-        processData();
-        updateRumus();
-    });
+            <div id="tab-frequency" class="tab-content active">
+                <div class="analysis-grid">
+                    <div class="analysis-card">
+                        <h3><i class="fas fa-fire"></i> Angka Panas (Hot)</h3>
+                        <div id="hotNumbersList" class="number-list"></div>
+                    </div>
+                    <div class="analysis-card">
+                        <h3><i class="fas fa-snowflake"></i> Angka Dingin (Cold)</h3>
+                        <div id="coldNumbersList" class="number-list"></div>
+                    </div>
+                    <div class="analysis-card analysis-full">
+                        <h3><i class="fas fa-chart-bar"></i> Frekuensi Lengkap</h3>
+                        <div id="frequencyChart" class="frequency-chart"></div>
+                    </div>
+                </div>
+            </div>
 
-    clearBtn.addEventListener('click', function() {
-        dataInput.value = '';
-        processedData = [];
-        data = [];
-        predictions = [];
-        dataTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#8a7a68;">Belum ada data</td></tr>`;
-        statInfo.innerHTML = '<p style="color:#8a7a68;">Belum ada data diproses</p>';
-        hotNumbers.textContent = '-';
-        coldNumbers.textContent = '-';
-        predictionResult.innerHTML = '<p style="color:#8a7a68;">Proses data terlebih dahulu</p>';
-        korelasiDisplay.innerHTML = '<p style="color:#8a7a68;">Proses data untuk melihat korelasi</p>';
-        rumusDetail.style.display = 'none';
-    });
+            <div id="tab-movement" class="tab-content">
+                <div class="movement-grid">
+                    <div class="analysis-card">
+                        <h3><i class="fas fa-arrow-up"></i> Tren Naik</h3>
+                        <div id="trendUp" class="number-list"></div>
+                    </div>
+                    <div class="analysis-card">
+                        <h3><i class="fas fa-arrow-down"></i> Tren Turun</h3>
+                        <div id="trendDown" class="number-list"></div>
+                    </div>
+                    <div class="analysis-card analysis-full">
+                        <h3><i class="fas fa-wave-square"></i> Grafik Pergerakan</h3>
+                        <div id="movementChart" class="movement-chart"></div>
+                    </div>
+                </div>
+            </div>
 
-    predictBtn.addEventListener('click', function() {
-        if (processedData.length === 0) {
-            alert('⚠️ Proses data terlebih dahulu!');
-            return;
-        }
-        generatePredictions();
-        renderPredictions();
-        updateRumus();
-    });
+            <div id="tab-pattern" class="tab-content">
+                <div class="pattern-grid">
+                    <div class="analysis-card">
+                        <h3><i class="fas fa-gem"></i> Pola Index</h3>
+                        <div id="indexPattern" class="pattern-content"></div>
+                    </div>
+                    <div class="analysis-card">
+                        <h3><i class="fas fa-magic"></i> Pola Mistis</h3>
+                        <div id="mysticalPattern" class="pattern-content"></div>
+                    </div>
+                    <div class="analysis-card">
+                        <h3><i class="fas fa-clock"></i> Pola Tenson</h3>
+                        <div id="tensonPattern" class="pattern-content"></div>
+                    </div>
+                    <div class="analysis-card">
+                        <h3><i class="fas fa-dragon"></i> Pola Shio</h3>
+                        <div id="shioPattern" class="pattern-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    rumusToggleBtn.addEventListener('click', function() {
-        showRumus = !showRumus;
-        rumusDetail.style.display = showRumus ? 'block' : 'none';
-        if (showRumus) updateRumus();
-    });
+    <!-- Patterns Section -->
+    <section id="patterns" class="patterns-section">
+        <div class="container">
+            <h2 class="section-title">🌀 Pola & Metode Lengkap</h2>
+            <p class="section-subtitle">12 Metode analisis untuk prediksi akurat</p>
+            
+            <div class="methods-grid">
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-chart-line"></i></div>
+                    <h4>Frekuensi</h4>
+                    <p>Analisis kemunculan angka</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-wave-square"></i></div>
+                    <h4>Pergerakan</h4>
+                    <p>Tren naik/turun angka</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-gem"></i></div>
+                    <h4>Index</h4>
+                    <p>Pola berdasarkan index</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-magic"></i></div>
+                    <h4>Mistis</h4>
+                    <p>Pola angka mistis</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-clock"></i></div>
+                    <h4>Tenson</h4>
+                    <p>Analisis tenson</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-dragon"></i></div>
+                    <h4>Shio</h4>
+                    <p>Pola berdasarkan shio</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-cubes"></i></div>
+                    <h4>Kombinasi</h4>
+                    <p>Gabungan metode</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-brain"></i></div>
+                    <h4>AI Pattern</h4>
+                    <p>Pola kecerdasan buatan</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-history"></i></div>
+                    <h4>Histori</h4>
+                    <p>Pola historis</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-sync"></i></div>
+                    <h4>Rotasi</h4>
+                    <p>Pola rotasi angka</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h4>Keseimbangan</h4>
+                    <p>Pola genap-ganjil</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon"><i class="fas fa-fire-alt"></i></div>
+                    <h4>Hot/Cold</h4>
+                    <p>Kombinasi panas-dingin</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // ---- INISIALISASI ----
-    // Load contoh data awal
-    setTimeout(() => {
-        sampleBtn.click();
-    }, 300);
+    <!-- Prediction Section -->
+    <section id="predict" class="predict-section">
+        <div class="container">
+            <h2 class="section-title">🔮 30 Set Prediksi</h2>
+            <p class="section-subtitle">Hasil prediksi dari 12 metode analisis berbeda</p>
+            
+            <div class="predict-controls">
+                <div class="method-selector">
+                    <label>Metode Utama:</label>
+                    <select id="mainMethod" onchange="generateAllPredictions()">
+                        <option value="combined">Kombinasi Semua</option>
+                        <option value="frequency">Frekuensi</option>
+                        <option value="movement">Pergerakan</option>
+                        <option value="index">Index</option>
+                        <option value="mystical">Mistis</option>
+                        <option value="tenson">Tenson</option>
+                        <option value="shio">Shio</option>
+                        <option value="ai">AI Pattern</option>
+                    </select>
+                </div>
+                <button onclick="generateAllPredictions()" class="btn btn-primary btn-large">
+                    <i class="fas fa-sync"></i> Generate 30 Set
+                </button>
+                <button onclick="exportPredictions()" class="btn btn-secondary">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+            </div>
 
-    console.log('✅ Simulasi Rumus Angka Lengkap siap!');
-    console.log('📚 Edukasi matematika & logika - Bukan perjudian');
-</script>
+            <div id="predictionsContainer" class="predictions-container">
+                <!-- 30 sets will be generated here -->
+            </div>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 TotoMacau Pro Analyst</p>
+            <p class="disclaimer">⚠️ Prediksi hanya berdasarkan analisis statistik, tidak menjamin kemenangan. Gunakan dengan bijak dan bertanggung jawab.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
