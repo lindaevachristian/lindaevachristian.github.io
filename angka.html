@@ -1,333 +1,81 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sortir Angka Otomatis</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sortir Angka</title>
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            background: white;
-            padding: 30px 35px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        h1 {
-            font-size: 26px;
-            color: #1a2b3c;
-            margin-top: 0;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .subtitle {
-            color: #5e6f8d;
-            font-size: 14px;
-            margin-bottom: 25px;
-            border-left: 4px solid #3b82f6;
-            padding-left: 14px;
-            background: #f8fafc;
-            border-radius: 0 8px 8px 0;
-            padding: 10px 16px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 180px;
-            padding: 16px 18px;
-            font-size: 15px;
-            font-family: 'Courier New', monospace;
-            border: 2px solid #d1d9e6;
-            border-radius: 12px;
-            resize: vertical;
-            transition: 0.2s;
-            background: #fafcff;
-            line-height: 1.7;
-        }
-
-        textarea:focus {
-            border-color: #3b82f6;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-            background: white;
-        }
-
-        .row-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 18px 0 22px;
-            align-items: center;
-        }
-
-        .btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 10px 28px;
-            border-radius: 30px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(59, 130, 246, 0.35);
-        }
-
-        .btn:active {
-            transform: scale(0.97);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: #1e293b;
-            border: 2px solid #cbd5e1;
-            box-shadow: none;
-        }
-
-        .btn-outline:hover {
-            background: #f1f5f9;
-            border-color: #94a3b8;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .btn-danger {
-            background: #ef4444;
-            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .info-badge {
-            margin-left: auto;
-            font-size: 14px;
-            color: #475569;
-            background: #eef2f6;
-            padding: 6px 16px;
-            border-radius: 30px;
-        }
-
-        .output-section {
-            margin-top: 25px;
-            border-top: 2px dashed #e2e8f0;
-            padding-top: 20px;
-        }
-
-        .output-label {
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .output-label span {
-            font-weight: 400;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .result-box {
-            background: #0b1120;
-            color: #e2e8f0;
-            padding: 18px 22px;
-            border-radius: 14px;
-            font-family: 'Courier New', monospace;
-            font-size: 15px;
-            line-height: 1.9;
-            white-space: pre-wrap;
-            word-break: break-all;
-            min-height: 60px;
-            border: 1px solid #1e293b;
-            overflow-x: auto;
-        }
-
-        .result-box .line {
-            display: block;
-            padding: 2px 0;
-        }
-
-        .result-box .line:not(:last-child) {
-            border-bottom: 1px solid #1e2a3a;
-        }
-
-        .empty-message {
-            color: #64748b;
-            font-style: italic;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .copy-btn {
-            background: #1e293b;
-            color: #cbd5e1;
-            border: 1px solid #334155;
-            padding: 6px 18px;
-            border-radius: 30px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .copy-btn:hover {
-            background: #334155;
-            color: white;
-        }
-
-        .footer-note {
-            margin-top: 18px;
-            font-size: 13px;
-            color: #94a3b8;
-            text-align: center;
-        }
-
-        @media (max-width: 640px) {
-            .container {
-                padding: 18px;
-            }
-            .row-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .info-badge {
-                margin-left: 0;
-                text-align: center;
-            }
-            .btn {
-                justify-content: center;
-            }
-            textarea {
-                height: 140px;
-            }
-        }
+        body { font-family: Arial; max-width: 900px; margin: 40px auto; padding: 20px; background: #f5f7fa; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        textarea { width: 100%; height: 200px; padding: 12px; font-family: monospace; font-size: 14px; border: 2px solid #ddd; border-radius: 8px; }
+        button { padding: 10px 24px; margin: 8px 8px 8px 0; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-success { background: #16a34a; color: white; }
+        .btn-success:hover { background: #15803d; }
+        .btn-danger { background: #dc2626; color: white; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-secondary { background: #6b7280; color: white; }
+        .btn-secondary:hover { background: #4b5563; }
+        .hasil { background: #0f172a; color: #e2e8f0; padding: 20px; border-radius: 8px; margin-top: 20px; font-family: monospace; font-size: 14px; line-height: 1.8; white-space: pre-wrap; overflow-x: auto; }
+        .hasil .label { color: #60a5fa; }
+        .info { color: #6b7280; font-size: 13px; margin-top: 10px; }
+        .row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+        .badge { background: #e5e7eb; padding: 4px 12px; border-radius: 20px; font-size: 13px; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <h1>
-        <span>📊</span> Sortir Angka Berurutan
-    </h1>
-    <div class="subtitle">
-        Masukkan daftar angka (bisa 5 digit, 4 digit, atau lainnya). 
-        Setiap angka di baris baru atau dipisahkan spasi/koma.
-        Hasil akan ditampilkan dalam 5 baris pemotongan.
-    </div>
-
-    <textarea id="inputNumbers" placeholder="Contoh:&#10;16804&#10;48491&#10;86216&#10;33415&#10;75240&#10;... atau bisa juga: 16804, 48491, 86216">16804
+    <h2>📊 Sortir Angka Otomatis</h2>
+    <p style="color: #6b7280;">Masukkan daftar angka (pisahkan dengan enter, spasi, atau koma)</p>
+    
+    <textarea id="inputNumbers" placeholder="Contoh:&#10;16804&#10;48491&#10;86216">16804
 48491
 86216
 33415
 75240
 40567
-80168
-86219
-30119
-36009
-60999
-33467
-27069
-14938
-64499
-44567
-48483
-32813
-33449
-19720
-26009
-82056
-12014
-32156
-67086
-95902
-43444
-16007
-69520
-59520
-14937
-21254
-21184
-32856
-14042
-19530
-61499
-23444
-73837
-49986
-59484
-88211
-62804
-75014
-04868
-13444
-19524
-14839
-23800
-94939</textarea>
-
-    <div class="row-actions">
-        <button class="btn" id="processBtn">🚀 Proses Sortir</button>
-        <button class="btn btn-outline" id="exampleBtn">📋 Muat Contoh</button>
-        <button class="btn btn-danger" id="clearBtn">✕ Kosongkan</button>
-        <span class="info-badge" id="countDisplay">Jumlah: 0</span>
+80168</textarea>
+    
+    <div class="row">
+        <button class="btn-primary" onclick="process()">▶ Proses</button>
+        <button class="btn-success" onclick="loadExample()">📋 Contoh 5 Digit</button>
+        <button class="btn-success" onclick="loadExample4()">📋 Contoh 4 Digit</button>
+        <button class="btn-danger" onclick="clearAll()">✕ Kosongkan</button>
+        <button class="btn-secondary" onclick="copyResult()">📄 Salin</button>
+        <span class="badge" id="countDisplay">Jumlah: 0</span>
     </div>
-
-    <div class="output-section">
-        <div class="output-label">
-            <span>📌 Hasil Sortir (5 tahap pemotongan)</span>
-            <button class="copy-btn" id="copyBtn">📄 Salin</button>
-        </div>
-        <div class="result-box" id="resultDisplay">
-            <span class="empty-message">Belum ada data. Klik "Proses Sortir" atau masukkan angka.</span>
-        </div>
-    </div>
-    <div class="footer-note">
-        ⚡ Setiap angka akan dipotong dari kiri sebanyak 0, 1, 2, 3, dan 4 digit.
-    </div>
+    
+    <div id="resultDisplay" class="hasil">Belum ada data. Klik "Proses" atau muat contoh.</div>
+    <div class="info">⚡ Setiap angka dipotong dari kiri: 0, 1, 2, 3, dan 4 digit</div>
 </div>
 
 <script>
-    (function() {
-        // --- DOM refs ---
-        const inputEl = document.getElementById('inputNumbers');
-        const processBtn = document.getElementById('processBtn');
-        const exampleBtn = document.getElementById('exampleBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const resultDisplay = document.getElementById('resultDisplay');
-        const countDisplay = document.getElementById('countDisplay');
+function process() {
+    const raw = document.getElementById('inputNumbers').value;
+    const numbers = raw.split(/[\s,;]+/).filter(s => s.trim() && /^\d+$/.test(s.trim()));
+    
+    document.getElementById('countDisplay').textContent = `Jumlah: ${numbers.length}`;
+    
+    if (numbers.length === 0) {
+        document.getElementById('resultDisplay').innerHTML = '❌ Tidak ada angka valid.';
+        return;
+    }
+    
+    let html = '';
+    const labels = ['📌 Baris 1 (tanpa potongan)', '✂️ Baris 2 (potong 1 digit)', '✂️ Baris 3 (potong 2 digit)', '✂️ Baris 4 (potong 3 digit)', '✂️ Baris 5 (potong 4 digit)'];
+    
+    for (let cut = 0; cut <= 4; cut++) {
+        const row = numbers.map(num => num.length > cut ? num.substring(cut) : '').join('*');
+        const displayRow = row || '(kosong)';
+        html += `<div><span class="label">${labels[cut]}:</span> ${displayRow}</div>`;
+    }
+    
+    document.getElementById('resultDisplay').innerHTML = html;
+}
 
-        // --- Contoh data default (5 digit) ---
-        const DEFAULT_EXAMPLE = `16804
+function loadExample() {
+    document.getElementById('inputNumbers').value = `16804
 48491
 86216
 33415
@@ -377,220 +125,84 @@
 14839
 23800
 94939`;
+    process();
+}
 
-        // --- Fungsi utama sortir ---
-        function processSorting(rawText) {
-            // 1. Pisahkan menjadi array angka (bersihkan spasi, koma, newline)
-            const tokens = rawText
-                .split(/[\s,;]+/)            // pisah berdasarkan spasi, koma, titik koma, newline
-                .map(s => s.trim())
-                .filter(s => s.length > 0 && /^\d+$/.test(s)); // hanya angka
+function loadExample4() {
+    document.getElementById('inputNumbers').value = `12004
+49024
+60498
+12604
+66088
+33801
+30656
+45577
+71683
+33401
+80655
+66886
+71811
+86032
+14934
+40389
+30040
+66036
+12040
+03133
+58584
+31655
+66186
+27393
+33433
+23581
+33523
+14989
+33371
+33421
+86251
+30654
+35063
+05063
+12891
+34655
+96791
+75780
+19525
+33003
+86022
+43009
+33452
+85039
+38514
+51047
+53444
+70697
+48184
+23183`;
+    process();
+}
 
-            if (tokens.length === 0) {
-                return { lines: [], count: 0, rawNumbers: [] };
-            }
+function clearAll() {
+    document.getElementById('inputNumbers').value = '';
+    document.getElementById('resultDisplay').innerHTML = 'Belum ada data. Klik "Proses" atau muat contoh.';
+    document.getElementById('countDisplay').textContent = 'Jumlah: 0';
+}
 
-            // 2. Tentukan panjang digit maksimum dari angka pertama (anggap seragam)
-            //    Tapi kita ambil panjang digit pertama sebagai acuan.
-            const firstLen = tokens[0].length;
-            // Validasi: jika ada angka dengan panjang berbeda, kita tetap pakai panjang pertama,
-            // tapi untuk amannya kita potong/padding? 
-            // Di sini kita akan proses per angka dengan panjang asli, 
-            // tapi untuk konsistensi kita ambil panjang berdasarkan angka pertama.
-            // Jika panjangnya < 5, maka baris ke-4 dan ke-5 mungkin kosong atau pendek.
-            // Tapi sesuai permintaan: "kalau di input 5digit maka di sortir seperti di atas,
-            // kalau 4 digit juga akan di sortir seperti di atas" -> artinya tetap 5 baris,
-            // dengan potongan 0,1,2,3,4 digit dari kiri.
-            // Maka kita potong sebanyak i digit dari kiri (i=0..4)
-            // Jika angka lebih pendek dari (i+1), hasilnya string kosong.
-            
-            const maxCut = 4; // selalu 5 baris (potong 0 s/d 4)
+function copyResult() {
+    const text = document.getElementById('resultDisplay').textContent;
+    if (!text || text.includes('Belum ada data')) {
+        alert('Tidak ada hasil untuk disalin.');
+        return;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+        alert('✅ Hasil disalin ke clipboard!');
+    }).catch(() => {
+        alert('Gagal menyalin, silakan copy manual.');
+    });
+}
 
-            // Bangun 5 baris hasil
-            const lines = [];
-            for (let cut = 0; cut <= maxCut; cut++) {
-                const row = tokens.map(num => {
-                    if (num.length > cut) {
-                        return num.substring(cut);
-                    } else {
-                        return ''; // jika angka lebih pendek dari cut, kosong
-                    }
-                });
-                // Gabungkan dengan * , tapi filter dulu yang kosong? 
-                // Biarkan kosong sebagai '' agar tetap ada posisi, 
-                // tapi agar tidak jadi "**" kita perlu handle.
-                // Namun di contoh, angka yang hilang tetap ditulis (misal 04*91*...)
-                // Jika angka kosong, kita tulis '' tetap, tapi nanti join akan jadi "* *"
-                // Lebih baik kita join dengan "*" dan hasilnya akan ada bintang ganda jika kosong.
-                // Tapi di contoh, setiap angka selalu ada (walau 0 di depan). 
-                // Untuk angka 4 digit, potong 4 digit menghasilkan sisa 0 digit -> string kosong.
-                // Kita akan tetap join dengan "*", sehingga muncul "*" ganda. 
-                // Contoh: "1234" -> potong 4 -> "" -> join: "...* *..."
-                // Tapi diharapkan seperti contoh: 04*91*16*... (tetap ada angka meskipun 1 digit)
-                // Kita akan ganti string kosong dengan " " (spasi) atau biarkan? 
-                // Lebih baik kita biarkan kosong, tapi pada tampilan kita akan ganti dengan " " agar rapi.
-                // Tapi agar sesuai dengan contoh, untuk angka yang tersisa 1 digit, ditampilkan apa adanya.
-                // Untuk yang kosong (jika angka 4 digit dipotong 4), akan menjadi empty string.
-                // Kita akan join, lalu replace pola "* *" menjadi "* *"? 
-                // Saya pilih: jika hasil potongan adalah "", kita ganti dengan " " (spasi) agar tidak menggabungkan bintang.
-                // Tapi lebih baik kita ikuti aturan: jika num.length > cut, ambil substring, else ambil "".
-                // Saat join, jika ada "" di antara *, akan jadi "**". Kita bisa ganti "**" dengan "* *"?
-                // Namun di contoh sebelumnya untuk 5 digit, tidak ada yang kosong karena cut max 4 dan angka 5 digit.
-                // Untuk 4 digit, cut=4 => hasil kosong. 
-                // Saya akan biarkan kosong, nanti di tampilan kita ganti "" dengan " " (spasi) agar terlihat.
-                // Tapi agar lebih rapi, kita akan filter? Tidak, karena harus tetap 5 baris.
-                // OK, kita akan replace empty string dengan " " saat join.
-                let joined = row.map(v => v === '' ? ' ' : v).join('*');
-                // Namun jika ada spasi di tengah, akan jadi "* *" yang berarti ada spasi.
-                // Tapi di contoh hasil baris ke-5 untuk angka 5 digit: "4*1*6*5*..." (tanpa spasi)
-                // Untuk 4 digit, baris ke-5 akan: "4*1*6*5*..." juga, karena angka 4 digit dipotong 4 => sisa 0,
-                // tapi di contoh untuk 4 digit, baris ke-4 adalah "04*24*98*..." (masih 2 digit), 
-                // baris ke-5 "4*4*8*..." (1 digit) -> tidak kosong.
-                // Untuk angka 4 digit: potong 0=4 digit, potong 1=3 digit, potong 2=2 digit, potong 3=1 digit, potong 4=0 digit.
-                // Jadi baris ke-5 (cut=4) akan kosong semua. Kita akan tampilkan "*" saja? 
-                // Saya akan tampilkan seperti contoh: baris ke-5 untuk 4 digit adalah kosong, tapi kita tetap tampilkan baris dengan "*" 
-                // untuk menunjukkan posisi. Contoh: jika ada 2 angka "1234" dan "5678", hasil baris ke-5: "*" ?
-                // Saya akan ikuti pola: jika semua kosong, kita tulis "[kosong]" atau biarkan kosong.
-                // Tapi lebih baik kita ikuti logika: tampilkan apa adanya, join dengan "*", 
-                // jika ada string kosong, maka akan jadi "**" yang berarti ada 2 bintang berturut.
-                // Kita akan ganti multiple "*" dengan "* *"? 
-                // OK, kita akan lakukan: setelah join, replace semua "**" menjadi "* *" agar terlihat ada celah.
-                // Tapi jika semua kosong, join akan jadi "" (karena semua ""), lalu replace tidak berpengaruh.
-                // Kita handle khusus: jika joined setelah replace semua "" dengan " ", hasilnya " * * ..."? 
-                // Saya akan gunakan cara: 
-                // 1. buat array hasil potongan, jika kosong beri string " "
-                // 2. join dengan "*"
-                // 3. lalu replace multiple spasi? 
-                // Saya akan sederhanakan: hasil potongan yang kosong kita ganti dengan " " (spasi tunggal),
-                // lalu join dengan "*". Hasilnya untuk cut=4 pada angka 4 digit: " * * * ..." (ada spasi di antara bintang).
-                // Tapi di contoh untuk 5 digit tidak ada spasi. 
-                // Agar konsisten, saya akan lakukan: jika hasil potongan adalah "", kita ganti dengan "" (kosong),
-                // lalu join, lalu replace semua "**" dengan "* *", dan jika hasilnya kosong semua, kita tulis " ".
-                // Namun pendekatan paling mudah: untuk setiap cut, kita buat string dengan memetakan setiap angka,
-                // jika num.length > cut, ambil substring, else ambil "".
-                // Lalu kita join dengan "*", lalu kita lakukan replace: 
-                // - ganti "* *" (bintang-spasi-bintang) menjadi "* *" (tidak berubah)
-                // - ganti "**" menjadi "* *" 
-                // - ganti "^\\*" (awal bintang) tidak perlu.
-                // Saya akan implementasikan dengan cara yang lebih bersih: 
-                // buat array hasil, lalu untuk setiap elemen jika kosong beri "_" (placeholder), 
-                // lalu join, lalu ganti "_" dengan ""? 
-                // OK, kita pakai cara simpel: 
-                // setiap row kita buat string dengan cara: row.map(v => v === '' ? ' ' : v).join('*')
-                // lalu kita trim spasi di ujung, dan ganti spasi ganda? 
-                // Untuk cut=4 pada 4 digit, hasil: " * * * ..." (ada spasi di awal)
-                // Kita akan trim spasi di awal dan akhir, lalu ganti " * " menjadi "* *"? 
-                // Biarkan saja, yang penting ada 5 baris.
-                // Saya akan gunakan cara: row.map(v => v === '' ? '' : v).join('*') lalu replace /\*{2,}/g, '* *'
-                // Tapi jika semua kosong, join = "".
-                // OK kita pakai cara ini.
-
-                let rawJoined = row.map(v => v === '' ? '' : v).join('*');
-                // Ganti multiple bintang menjadi bintang-spasi-bintang
-                rawJoined = rawJoined.replace(/\*{2,}/g, (match) => {
-                    return '* ' + ' '.repeat(match.length - 2) + ' *';
-                });
-                // Jika hasil kosong, beri spasi
-                if (rawJoined === '') rawJoined = ' ';
-                lines.push(rawJoined);
-            }
-
-            return { lines, count: tokens.length, rawNumbers: tokens };
-        }
-
-        // --- Render hasil ---
-        function renderResult(text) {
-            const result = processSorting(text);
-            const count = result.count;
-            const lines = result.lines;
-
-            countDisplay.textContent = `Jumlah: ${count}`;
-
-            if (count === 0) {
-                resultDisplay.innerHTML = `<span class="empty-message">Tidak ada angka valid. Masukkan setidaknya satu angka.</span>`;
-                return;
-            }
-
-            // Buat tampilan dengan 5 baris
-            let html = '';
-            const labels = ['Baris 1 (5 digit):', 'Baris 2 (4 digit):', 'Baris 3 (3 digit):', 'Baris 4 (2 digit):', 'Baris 5 (1 digit):'];
-            for (let i = 0; i < lines.length; i++) {
-                const lineContent = lines[i] || ' ';
-                html += `<div class="line"><strong>${labels[i]}</strong> ${lineContent}</div>`;
-            }
-            resultDisplay.innerHTML = html;
-        }
-
-        // --- Event handlers ---
-        function processCurrentInput() {
-            const raw = inputEl.value;
-            renderResult(raw);
-        }
-
-        function loadExample() {
-            inputEl.value = DEFAULT_EXAMPLE;
-            processCurrentInput();
-        }
-
-        function clearAll() {
-            inputEl.value = '';
-            resultDisplay.innerHTML = `<span class="empty-message">Belum ada data. Klik "Proses Sortir" atau masukkan angka.</span>`;
-            countDisplay.textContent = 'Jumlah: 0';
-        }
-
-        function copyResult() {
-            // Ambil teks dari resultDisplay (tanpa tag HTML)
-            const lines = resultDisplay.querySelectorAll('.line');
-            if (lines.length === 0) {
-                alert('Tidak ada hasil untuk disalin.');
-                return;
-            }
-            let textToCopy = '';
-            lines.forEach(line => {
-                // Ambil teks setelah label
-                const label = line.querySelector('strong');
-                if (label) {
-                    const labelText = label.textContent;
-                    const content = line.textContent.replace(labelText, '').trim();
-                    textToCopy += labelText + ' ' + content + '\n';
-                } else {
-                    textToCopy += line.textContent + '\n';
-                }
-            });
-            navigator.clipboard.writeText(textToCopy.trim()).then(() => {
-                alert('Hasil berhasil disalin ke clipboard!');
-            }).catch(() => {
-                // Fallback
-                const textarea = document.createElement('textarea');
-                textarea.value = textToCopy.trim();
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                alert('Hasil disalin!');
-            });
-        }
-
-        // --- Inisialisasi & Event binding ---
-        processBtn.addEventListener('click', processCurrentInput);
-        exampleBtn.addEventListener('click', loadExample);
-        clearBtn.addEventListener('click', clearAll);
-        copyBtn.addEventListener('click', copyResult);
-
-        // Muat contoh saat pertama kali
-        loadExample();
-
-        // Optional: proses otomatis saat user mengetik? (tapi kita pakai tombol agar tidak terlalu berat)
-        // Bisa ditambahkan shortcut: Ctrl+Enter
-        inputEl.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                e.preventDefault();
-                processCurrentInput();
-            }
-        });
-
-    })();
+// Jalankan otomatis dengan contoh
+window.onload = loadExample;
 </script>
-
 </body>
 </html>
