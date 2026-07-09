@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sortir Angka</title>
+    <style>
+        body { font-family: Arial; max-width: 900px; margin: 40px auto; padding: 20px; background: #f5f7fa; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        textarea { width: 100%; height: 200px; padding: 12px; font-family: monospace; font-size: 14px; border: 2px solid #ddd; border-radius: 8px; }
+        button { padding: 10px 24px; margin: 8px 8px 8px 0; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-success { background: #16a34a; color: white; }
+        .btn-success:hover { background: #15803d; }
+        .btn-danger { background: #dc2626; color: white; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-secondary { background: #6b7280; color: white; }
+        .btn-secondary:hover { background: #4b5563; }
+        .hasil { background: #0f172a; color: #e2e8f0; padding: 20px; border-radius: 8px; margin-top: 20px; font-family: monospace; font-size: 14px; line-height: 1.8; white-space: pre-wrap; overflow-x: auto; }
+        .hasil .label { color: #60a5fa; }
+        .info { color: #6b7280; font-size: 13px; margin-top: 10px; }
+        .row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+        .badge { background: #e5e7eb; padding: 4px 12px; border-radius: 20px; font-size: 13px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>📊 Sortir Angka Otomatis</h2>
+    <p style="color: #6b7280;">Masukkan daftar angka (pisahkan dengan enter, spasi, atau koma)</p>
+    
+    <textarea id="inputNumbers" placeholder="Contoh:&#10;16804&#10;48491&#10;86216">16804
+48491
+86216
+33415
+75240
+40567
+80168</textarea>
+    
+    <div class="row">
+        <button class="btn-primary" onclick="process()">▶ Proses</button>
+        <button class="btn-success" onclick="loadExample()">📋 Contoh 5 Digit</button>
+        <button class="btn-success" onclick="loadExample4()">📋 Contoh 4 Digit</button>
+        <button class="btn-danger" onclick="clearAll()">✕ Kosongkan</button>
+        <button class="btn-secondary" onclick="copyResult()">📄 Salin</button>
+        <span class="badge" id="countDisplay">Jumlah: 0</span>
+    </div>
+    
+    <div id="resultDisplay" class="hasil">Belum ada data. Klik "Proses" atau muat contoh.</div>
+    <div class="info">⚡ Setiap angka dipotong dari kiri: 0, 1, 2, 3, dan 4 digit</div>
+</div>
+
+<script>
+function process() {
+    const raw = document.getElementById('inputNumbers').value;
+    const numbers = raw.split(/[\s,;]+/).filter(s => s.trim() && /^\d+$/.test(s.trim()));
+    
+    document.getElementById('countDisplay').textContent = `Jumlah: ${numbers.length}`;
+    
+    if (numbers.length === 0) {
+        document.getElementById('resultDisplay').innerHTML = '❌ Tidak ada angka valid.';
+        return;
+    }
+    
+    let html = '';
+    const labels = ['📌 Baris 1 (tanpa potongan)', '✂️ Baris 2 (potong 1 digit)', '✂️ Baris 3 (potong 2 digit)', '✂️ Baris 4 (potong 3 digit)', '✂️ Baris 5 (potong 4 digit)'];
+    
+    for (let cut = 0; cut <= 4; cut++) {
+        const row = numbers.map(num => num.length > cut ? num.substring(cut) : '').join('*');
+        const displayRow = row || '(kosong)';
+        html += `<div><span class="label">${labels[cut]}:</span> ${displayRow}</div>`;
+    }
+    
+    document.getElementById('resultDisplay').innerHTML = html;
+}
+
+function loadExample() {
+    document.getElementById('inputNumbers').value = `16804
+48491
+86216
+33415
+75240
+40567
+80168
+86219
+30119
+36009
+60999
+33467
+27069
+14938
+64499
+44567
+48483
+32813
+33449
+19720
+26009
+82056
+12014
+32156
+67086
+95902
+43444
+16007
+69520
+59520
+14937
+21254
+21184
+32856
+14042
+19530
+61499
+23444
+73837
+49986
+59484
+88211
+62804
+75014
+04868
+13444
+19524
+14839
+23800
+94939`;
+    process();
+}
+
+function loadExample4() {
+    document.getElementById('inputNumbers').value = `12004
+49024
+60498
+12604
+66088
+33801
+30656
+45577
+71683
+33401
+80655
+66886
+71811
+86032
+14934
+40389
+30040
+66036
+12040
+03133
+58584
+31655
+66186
+27393
+33433
+23581
+33523
+14989
+33371
+33421
+86251
+30654
+35063
+05063
+12891
+34655
+96791
+75780
+19525
+33003
+86022
+43009
+33452
+85039
+38514
+51047
+53444
+70697
+48184
+23183`;
+    process();
+}
+
+function clearAll() {
+    document.getElementById('inputNumbers').value = '';
+    document.getElementById('resultDisplay').innerHTML = 'Belum ada data. Klik "Proses" atau muat contoh.';
+    document.getElementById('countDisplay').textContent = 'Jumlah: 0';
+}
+
+function copyResult() {
+    const text = document.getElementById('resultDisplay').textContent;
+    if (!text || text.includes('Belum ada data')) {
+        alert('Tidak ada hasil untuk disalin.');
+        return;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+        alert('✅ Hasil disalin ke clipboard!');
+    }).catch(() => {
+        alert('Gagal menyalin, silakan copy manual.');
+    });
+}
+
+// Jalankan otomatis dengan contoh
+window.onload = loadExample;
+</script>
+</body>
+</html>
