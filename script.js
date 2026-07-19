@@ -2,8 +2,17 @@
 const LATITUDE = 5.553584;
 const LONGITUDE = 95.317276;
 
-// API Configuration
-const API_URL = `https://api.aladhan.com/v1/timings?latitude=${LATITUDE}&longitude=${LONGITUDE}&method=2`;
+// Multiple API endpoints untuk fallback
+const API_ENDPOINTS = [
+    // Aladhan API - Method 2 (ISNA)
+    `https://api.aladhan.com/v1/timings?latitude=${LATITUDE}&longitude=${LONGITUDE}&method=2`,
+    
+    // Aladhan API - Method 4 (Kementerian Agama RI - lebih akurat untuk Indonesia)
+    `https://api.aladhan.com/v1/timings?latitude=${LATITUDE}&longitude=${LONGITUDE}&method=4`,
+    
+    // Aladhan API - dengan tanggal hari ini
+    `https://api.aladhan.com/v1/timings/${new Date().toISOString().split('T')[0]}?latitude=${LATITUDE}&longitude=${LONGITUDE}&method=4`
+];
 
 // Prayer names mapping
 const PRAYER_NAMES = {
@@ -14,11 +23,11 @@ const PRAYER_NAMES = {
     Isha: 'Isya',
 };
 
-// Prayer order for next prayer calculation
 const PRAYER_ORDER = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
 let prayerTimes = {};
 let currentDate = new Date();
+let currentApiIndex = 0;
 
 // DOM Elements
 const elements = {
@@ -35,24 +44,27 @@ const elements = {
     prayerCards: document.querySelectorAll('.prayer-card'),
 };
 
-// Helper function to format time
+// Helper: Format waktu ke 12 jam
 function formatTime(timeStr) {
     if (!timeStr) return '--:--';
-    // Convert from 24h to 12h format
-    const [hours, minutes] = timeStr.split(':');
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
+    try {
+        const [hours, minutes] = timeStr.split(':');
+        const hour = parseInt(hours);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const hour12 = hour % 12 || 12;
+        return `${hour12}:${minutes} ${ampm}`;
+    } catch {
+        return timeStr;
+    }
 }
 
-// Helper function to get current time in HH:MM format
+// Helper: Dapatkan waktu sekarang HH:MM
 function getCurrentTime() {
     const now = new Date();
     return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 }
 
-// Format date
+// Format tanggal
 function formatDate(date) {
     const options = {
         weekday: 'long',
@@ -63,7 +75,7 @@ function formatDate(date) {
     return date.toLocaleDateString('id-ID', options);
 }
 
-// Find next prayer
+// Cari waktu shalat berikutnya
 function findNextPrayer(times) {
     const now = getCurrentTime();
     const prayerList = PRAYER_ORDER.map((key) => ({
@@ -72,44 +84,87 @@ function findNextPrayer(times) {
         time: times[key],
     }));
 
-    // Find the next prayer
     for (const prayer of prayerList) {
         if (prayer.time > now) {
             return prayer;
         }
     }
-
-    // If all prayers passed, return the first prayer of tomorrow
     return { ...prayerList[0], isTomorrow: true };
 }
 
-// Update active prayer card
+// Update active card
 function updateActivePrayer(nextPrayerKey) {
     elements.prayerCards.forEach((card) => {
         card.classList.remove('active');
-        const cardId = card.id;
-        if (cardId === nextPrayerKey?.toLowerCase()) {
+        if (card.id === nextPrayerKey?.toLowerCase()) {
             card.classList.add('active');
         }
     });
 }
 
-// Fetch prayer times from API
+// Fetch dengan timeout
+async function fetchWithTimeout(url, timeout = 10000) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    try {
+        const response = await fetch(url, { 
+            signal: controller.signal,
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        clearTimeout(timeoutId);
+        return response;
+    } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
+    }
+}
+
+// Fetch prayer times from API dengan fallback
 async function fetchPrayerTimes() {
     try {
-        // Show loading state
+        // Tampilkan loading
         document.querySelectorAll('.time').forEach((el) => {
-            el.textContent = '--:--';
+            el.textContent = '⏳';
         });
+        elements.currentDate.textContent = 'Memuat data...';
 
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        let data = null;
+        let lastError = null;
+
+        // Coba semua endpoint
+        for (let i = 0; i < API_ENDPOINTS.length; i++) {
+            try {
+                const url = API_ENDPOINTS[i];
+                console.log(`🔄 Mencoba endpoint ${i+1}: ${url}`);
+                
+                const response = await fetchWithTimeout(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result && result.data && result.data.timings) {
+                    data = result;
+                    console.log(`✅ Berhasil dari endpoint ${i+1}`);
+                    break;
+                }
+            } catch (error) {
+                console.warn(`❌ Endpoint ${i+1} gagal:`, error.message);
+                lastError = error;
+            }
         }
 
-        const data = await response.json();
-        const timings = data.data.timings;
+        if (!data) {
+            throw new Error('Semua endpoint gagal. ' + (lastError?.message || ''));
+        }
 
+        const timings = data.data.timings;
+        
         // Store prayer times
         prayerTimes = {
             Fajr: timings.Fajr,
@@ -122,58 +177,55 @@ async function fetchPrayerTimes() {
         // Update UI
         updateUI();
 
-        // Update last update time
+        // Update waktu
         const now = new Date();
         elements.lastUpdate.textContent = `Terakhir diperbarui: ${now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
-
+        
         return data;
     } catch (error) {
-        console.error('Error fetching prayer times:', error);
-        elements.lastUpdate.textContent = 'Gagal memperbarui data. Coba lagi nanti.';
-        // Show error state
+        console.error('❌ Error fetching prayer times:', error);
+        elements.lastUpdate.textContent = '⚠️ Gagal memperbarui data';
+        
+        // Tampilkan pesan error di card
         document.querySelectorAll('.time').forEach((el) => {
-            el.textContent = 'Error';
+            el.textContent = '❌';
         });
+        elements.currentDate.textContent = 'Gagal memuat data';
+        
         return null;
     }
 }
 
-// Update UI with prayer times
+// Update UI
 function updateUI() {
     if (!prayerTimes || Object.keys(prayerTimes).length === 0) return;
 
-    // Update each prayer time
     elements.fajr.textContent = formatTime(prayerTimes.Fajr);
     elements.dhuhr.textContent = formatTime(prayerTimes.Dhuhr);
     elements.asr.textContent = formatTime(prayerTimes.Asr);
     elements.maghrib.textContent = formatTime(prayerTimes.Maghrib);
     elements.isha.textContent = formatTime(prayerTimes.Isha);
 
-    // Update next prayer
     const nextPrayer = findNextPrayer(prayerTimes);
     if (nextPrayer) {
         elements.nextPrayerName.textContent = nextPrayer.name;
         elements.nextPrayerTime.textContent = nextPrayer.isTomorrow
             ? `${formatTime(nextPrayer.time)} (Besok)`
             : formatTime(nextPrayer.time);
-
-        // Update active card
         updateActivePrayer(nextPrayer.key);
     }
 
-    // Update date
     elements.currentDate.textContent = formatDate(currentDate);
 }
 
-// Auto-refresh every 5 minutes
+// Auto-refresh
 function startAutoRefresh() {
-    // Refresh every 5 minutes (300000 ms)
     setInterval(async () => {
         await fetchPrayerTimes();
-    }, 300000);
+    }, 300000); // 5 menit
 }
 
-// Handle refresh button click
+// Refresh button
 elements.refreshBtn.addEventListener('click', async () => {
     elements.refreshBtn.style.transform = 'rotate(360deg)';
     await fetchPrayerTimes();
@@ -184,16 +236,11 @@ elements.refreshBtn.addEventListener('click', async () => {
 
 // Initialize
 async function init() {
-    // Set initial date
     elements.currentDate.textContent = formatDate(currentDate);
-
-    // Fetch initial data
     await fetchPrayerTimes();
-
-    // Start auto-refresh
     startAutoRefresh();
 
-    // Update date at midnight
+    // Update tanggal setiap menit
     setInterval(() => {
         const now = new Date();
         if (now.getDate() !== currentDate.getDate()) {
@@ -203,10 +250,9 @@ async function init() {
     }, 60000);
 }
 
-// Start the app
+// Start
 init();
 
-// Log success
 console.log('🕌 Jadwal Shalat Banda Aceh - Baiturrahman');
 console.log(`📍 Koordinat: ${LATITUDE}, ${LONGITUDE}`);
-console.log('🔄 Data akan diperbarui otomatis setiap 5 menit');
+console.log('🔄 Auto-refresh setiap 5 menit');
