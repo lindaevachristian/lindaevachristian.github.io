@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jadwal Shalat - Banda Aceh</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Font Awesome for Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="location">
+                <i class="fas fa-map-pin"></i>
+                <h1>Banda Aceh</h1>
+            </div>
+            <p class="subtitle">Kecamatan Baiturrahman</p>
+            <p class="date" id="currentDate"></p>
+        </header>
+
+        <!-- Main Prayer Times -->
+        <div class="prayer-grid">
+            <div class="prayer-card" id="fajr">
+                <div class="prayer-icon">
+                    <i class="fas fa-cloud-moon"></i>
+                </div>
+                <div class="prayer-info">
+                    <h3>Subuh</h3>
+                    <p class="time" id="fajrTime">--:--</p>
+                </div>
+            </div>
+
+            <div class="prayer-card" id="dhuhr">
+                <div class="prayer-icon">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div class="prayer-info">
+                    <h3>Zuhur</h3>
+                    <p class="time" id="dhuhrTime">--:--</p>
+                </div>
+            </div>
+
+            <div class="prayer-card" id="asr">
+                <div class="prayer-icon">
+                    <i class="fas fa-cloud-sun"></i>
+                </div>
+                <div class="prayer-info">
+                    <h3>Ashar</h3>
+                    <p class="time" id="asrTime">--:--</p>
+                </div>
+            </div>
+
+            <div class="prayer-card" id="maghrib">
+                <div class="prayer-icon">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="prayer-info">
+                    <h3>Maghrib</h3>
+                    <p class="time" id="maghribTime">--:--</p>
+                </div>
+            </div>
+
+            <div class="prayer-card" id="isha">
+                <div class="prayer-icon">
+                    <i class="fas fa-stars"></i>
+                </div>
+                <div class="prayer-info">
+                    <h3>Isya</h3>
+                    <p class="time" id="ishaTime">--:--</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Prayer Highlight -->
+        <div class="next-prayer">
+            <div class="next-prayer-content">
+                <span class="label">Waktu Shalat Berikutnya</span>
+                <span class="next-prayer-name" id="nextPrayerName">--</span>
+                <span class="next-prayer-time" id="nextPrayerTime">--:--</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>
+                <i class="fas fa-sync-alt" id="refreshBtn"></i>
+                <span id="lastUpdate">Terakhir diperbarui: --:--</span>
+            </p>
+            <p class="source">Sumber: Aladhan API</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
